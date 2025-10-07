@@ -24,8 +24,8 @@ Feel free to use my application code (either directly or as inspiration):
 ### 0. Conversion Domain
 Prepare a working backend for testing.  
 - Convert PHP backend to Python.  
-- Connect to MySQL.  
-- Implement API endpoints in Flask.  
+- Connect to MySQL (or MariaDB?).  
+- Implement API endpoints in Flask (or FastAPI?).  
 - Verify database access and responses manually.  
 
 **Output:** Stable Python + MySQL backend with functional API.
@@ -37,6 +37,7 @@ Test internal logic (no DB/API).
 - Validate CPR, gender, date of birth, address, phone generation.  
 - Use pytest with black-box and white-box methods.  
 - Run static analysis 
+- Test case values
 
 **Output:** Reliable backend logic and quality metrics.
 
@@ -64,11 +65,19 @@ Test full workflow through the frontend.
 ---
 
 ## Team & Roles
-| Pair | Members | Focus |
-|------|----------|--------|
-| 1 | Name1, Name2 | Unit tests + static analysis |
-| 2 | Name3, Name4 | Integration + API testing |
-| 3 | Name5, Name6 | End-to-End + CI/CD |
+| Members | Focus |
+|----------|--------|
+| ??? | Conversion |
+| ??? | Unit tests + static analysis |
+| ??? | Integration + API testing |
+| ??? | End-to-End + CI/CD |
+
+- @nathasjafink  
+- @SofieAmalie44  
+- @ViktorBach  
+- @ChristianBT96  
+- @DetGrey  
+- @marcus-rk
 
 ---
 
