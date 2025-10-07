@@ -14,6 +14,7 @@ Focus: testing through unit, integration, and end-to-end levels.
 Feel free to use my application code (either directly or as inspiration):
 - Backend (MariaDB / PHP8): https://github.com/arturomorarioja/fake_info/
 - Frontend (JavaScript / CSS3 / HTML5): https://github.com/arturomorarioja/js_fake_info_frontend
+- [Assignment description (PDF)](https://github.com/Group-I-Personal-Test-Data-Generator/Personal-Test-Data-Generator/blob/main/First_Mandatory_Assignment.pdf)
 
 ---
 
