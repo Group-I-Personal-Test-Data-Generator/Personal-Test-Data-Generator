@@ -33,7 +33,7 @@ Prepare a working backend for testing.
 Test internal logic (no DB/API).  
 - Validate CPR, gender, date of birth, address, phone generation.  
 - Use pytest with black-box and white-box methods.  
-- Run static analysis (`flake8`, `bandit`, `mypy`).  
+- Run static analysis 
 
 **Output:** Reliable backend logic and quality metrics.
 
