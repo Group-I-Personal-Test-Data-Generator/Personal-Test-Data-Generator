@@ -79,8 +79,3 @@ README.md
 - [ ] Integration tests & CI
 - [ ] E2E tests & CI/CD
 - [ ] Report & presentation ready
-
----
-
-### ⚙️ Tools
-Python · MySQL · Pytest · Postman · Cypress/Playwright · GitHub Actions
