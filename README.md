@@ -6,8 +6,6 @@
 ![Postman](https://img.shields.io/badge/API-Postman-orange?logo=postman)
 ![Playwright](https://img.shields.io/badge/E2E-Playwright-purple?logo=microsoft)
 
----
-
 ### Project Overview
 The system generates fake Danish personal data (CPR, name, address, phone) for testing.  
 Originally in PHP + MariaDB, now converted to **?(Python + Flask + MySQL)?**.  
@@ -30,7 +28,7 @@ Prepare a working backend for testing.
 
 **Output:** Stable Python + MySQL backend with functional API.
 
----
+<br>
 
 ### 1. Unit Domain
 Test internal logic (no DB/API).  
@@ -41,7 +39,7 @@ Test internal logic (no DB/API).
 
 **Output:** Reliable backend logic and quality metrics.
 
----
+<br>
 
 ### 2. Integration Domain
 Test backend + database + API as one system.  
@@ -52,7 +50,7 @@ Test backend + database + API as one system.
 
 **Output:** Verified and automated integration flow.
 
----
+<br>
 
 ### 3. System / End-to-End Domain
 Test full workflow through the frontend.  
@@ -64,20 +62,22 @@ Test full workflow through the frontend.
 
 ---
 
-## Team & Roles
-| Members | Focus |
+## Team and Delegation
+
+| GitHub | Usernames | 
+|-----------------|-----------------|
+| [@nathasjafink](https://github.com/nathasjafink) | [@SofieAmalie44](https://github.com/SofieAmalie44) |
+| [@ViktorBach](https://github.com/ViktorBach) | [@ChristianBT96](https://github.com/ChristianBT96) |
+| [@DetGrey](https://github.com/DetGrey) | [@marcus-rk](https://github.com/marcus-rk) |
+
+<br>
+
+| Members | Delegation |
 |----------|--------|
-| ??? | Conversion |
+| ??? | Backend Conversion |
 | ??? | Unit tests + static analysis |
 | ??? | Integration + API testing |
 | ??? | End-to-End + CI/CD |
-
-- @nathasjafink  
-- @SofieAmalie44  
-- @ViktorBach  
-- @ChristianBT96  
-- @DetGrey  
-- @marcus-rk
 
 ---
 
@@ -85,6 +85,8 @@ Test full workflow through the frontend.
 ```
 ...
 /backend
+/frontend
+/database
 /tests/unit
 /tests/integration
 /tests/e2e
