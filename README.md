@@ -7,51 +7,60 @@
 ![Playwright](https://img.shields.io/badge/E2E-Playwright-purple?logo=microsoft)
 ![GitHub Actions](https://img.shields.io/badge/CI-CD-GitHub_Actions-black?logo=githubactions)
 
-### 🎯 Project Overview
-Application that generates **fake Danish personal data** (CPR, names, addresses, phone numbers) for software testing.  
-Originally built in PHP + MariaDB, now converted to **Python + MySQL**.  
-The focus is **testing** — not development — using unit, integration, and end-to-end approaches.  
-
 ---
-## 🧩 Domains and Dependencies
-### **0. Conversion Domain**
-**Goal:** Prepare a consistent and testable Python + MySQL backend.  
-- Convert backend logic from PHP to Python.  
-- Connect to MySQL using `mysql.connector`.  
-- Recreate endpoints in Flask (or FastAPI?).  
-- Verify API outputs and database access manually.  
-**→ Output:** Working baseline system for all subsequent testing domains.
 
----
-### **1. Unit Domain**
-**Goal:** Verify correctness of individual backend functions.  
-- Test CPR, gender, date-of-birth generation.  
-- Test address and phone logic.  
-- No database or API involved (pure Python).  
-- Apply black-box and white-box techniques.  
-**→ Output:** Reliable backend logic and full code coverage.
+### Project Overview
+The system generates fake Danish personal data (CPR, name, address, phone) for testing.  
+Originally in PHP + MariaDB, now converted to Python + Flask + MySQL.  
+Focus: testing through unit, integration, and end-to-end levels.
 
 ---
 
-### **2. Integration Domain**
-**Goal:** Verify data flow across backend + database + API.  
-- Ensure correct responses from endpoints (Flask/FastAPI).  
-- Check consistency between CPR and date-of-birth.  
-- Validate address data from MySQL.  
-- Use Postman + pytest integration tests.  
-**→ Output:** Backend and API work as a unified system.
+## Domains
+
+### 0. Conversion Domain
+Prepare a working backend for testing.  
+- Convert PHP backend to Python.  
+- Connect to MySQL.  
+- Implement API endpoints in Flask.  
+- Verify database access and responses manually.  
+
+**Output:** Stable Python + MySQL backend with functional API.
 
 ---
 
-### **3. System / End-to-End Domain**
-**Goal:** Validate the entire system through the frontend.  
-- Use Cypress or Playwright to simulate user actions.  
-- Verify that UI displays API data correctly.  
-- Include error handling and edge cases.  
-**→ Output:** Fully functional fake data generator tested as a whole.
+### 1. Unit Domain
+Test internal logic (no DB/API).  
+- Validate CPR, gender, date of birth, address, phone generation.  
+- Use pytest with black-box and white-box methods.  
+- Run static analysis (`flake8`, `bandit`, `mypy`).  
+
+**Output:** Reliable backend logic and quality metrics.
 
 ---
-### 👥 Team & Roles
+
+### 2. Integration Domain
+Test backend + database + API as one system.  
+- Verify endpoints return consistent, correct data.  
+- Test database retrieval via MySQL.  
+- Automate API tests with Postman and pytest.  
+- Add tests to CI pipeline.  
+
+**Output:** Verified and automated integration flow.
+
+---
+
+### 3. System / End-to-End Domain
+Test full workflow through the frontend.  
+- Use Playwright (or Cypress/Selenium).  
+- Validate UI correctly displays API data.  
+- Integrate all test layers in CI/CD.  
+
+**Output:** Fully tested system ready for demo and delivery.
+
+---
+
+## Team & Roles
 | Pair | Members | Focus |
 |------|----------|--------|
 | 1 | Name1, Name2 | Unit tests + static analysis |
@@ -60,7 +69,7 @@ The focus is **testing** — not development — using unit, integration, and en
 
 ---
 
-### 🧩 Project Structure
+## Project Structure
 ```
 /backend
 /tests/unit
@@ -72,10 +81,11 @@ README.md
 
 ---
 
-### ✅ Progress
-- [x] Backend converted to Python
-- [ ] Database connected
-- [ ] Unit tests & static analysis
-- [ ] Integration tests & CI
-- [ ] E2E tests & CI/CD
-- [ ] Report & presentation ready
+## Checklist
+- [x] Organization / Repository created
+- [ ] Backend converted to Python  
+- [ ] Database connected  
+- [ ] Unit tests & static analysis  
+- [ ] Integration tests & CI setup  
+- [ ] E2E tests & CI/CD pipeline  
+- [ ] Report and presentation complete
