@@ -11,7 +11,7 @@
 
 ### Project Overview
 The system generates fake Danish personal data (CPR, name, address, phone) for testing.  
-Originally in PHP + MariaDB, now converted to Python + Flask + MySQL.  
+Originally in PHP + MariaDB, now converted to **?(Python + Flask + MySQL)?**.  
 Focus: testing through unit, integration, and end-to-end levels.
 
 ---
@@ -71,12 +71,14 @@ Test full workflow through the frontend.
 
 ## Project Structure
 ```
+...
 /backend
 /tests/unit
 /tests/integration
 /tests/e2e
 /.github/workflows
 README.md
+...
 ```
 
 ---
