@@ -5,7 +5,6 @@
 ![MySQL](https://img.shields.io/badge/Database-MySQL-blue?logo=mysql)
 ![Postman](https://img.shields.io/badge/API-Postman-orange?logo=postman)
 ![Playwright](https://img.shields.io/badge/E2E-Playwright-purple?logo=microsoft)
-![GitHub Actions](https://img.shields.io/badge/CI-CD-GitHub_Actions-black?logo=githubactions)
 
 ---
 
@@ -13,6 +12,10 @@
 The system generates fake Danish personal data (CPR, name, address, phone) for testing.  
 Originally in PHP + MariaDB, now converted to **?(Python + Flask + MySQL)?**.  
 Focus: testing through unit, integration, and end-to-end levels.
+
+Feel free to use my application code (either directly or as inspiration):
+- Backend (MariaDB / PHP8): https://github.com/arturomorarioja/fake_info/
+- Frontend (JavaScript / CSS3 / HTML5): https://github.com/arturomorarioja/js_fake_info_frontend
 
 ---
 
