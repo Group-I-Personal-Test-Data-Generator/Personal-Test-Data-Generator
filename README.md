@@ -59,6 +59,7 @@ Convert PHP backend to Python (Flask) and connect to MariaDB.
 - [ ] Flask REST API endpoints implemented  
 - [ ] MariaDB connection established  
 - [ ] Manual API + DB verification  
+- [ ] ...  
 
 **Output:** Stable Flask + MariaDB backend.
 
@@ -73,7 +74,12 @@ Validate backend logic independent of database and API.
 - [ ] White-box tests (statement & branch coverage)  
 - [ ] Black-box tests (EP, BVA, Decision Tables)  
 - [ ] CPR, gender, date, phone, address logic verified  
-- [ ] Statement & branch coverage metrics generated  
+- [ ] Statement & branch coverage metrics generated
+- [ ] ...  
+
+> ***Marcus Note:***    
+> Just a thought, some of the `FakeInfo` methods could be split into smaller ones (like `getCpr()`, `getFullName()`, `getGender()`, or `getBirthDate()`).  
+> Following SoC and AAA best practice, unit tests should focus on one behavior at a time, and combined methods (like `getCprFullNameGenderAndBirthDate()`) could make that harder.
 
 **Output:** Reliable backend logic validated through automated tests.
 
@@ -87,7 +93,8 @@ Test combined flow between backend, database, and API.
 **Checklist:**  
 - [ ] API tested via Postman 
 - [ ] Database queries verified  
-- [ ] Integration automated in CI/CD pipeline (LATER)  
+- [ ] Integration automated in CI/CD pipeline (LATER)
+- [ ] ...  
 
 **Output:** Verified and automated integration flow.
 
@@ -102,7 +109,8 @@ Validate complete system behavior through the frontend.
 - [ ] Playwright / Cypress configured  
 - [ ] UI displays API data correctly  
 - [ ] “Happy path” tested end-to-end  
-- [ ] Integrated into CI/CD  (LATER) 
+- [ ] Integrated into CI/CD  (LATER)
+- [ ] ...  
 
 **Output:** Full system tested and validated.
 
@@ -115,7 +123,8 @@ Ensure maintainable and consistent code quality.
 
 **Checklist:**  
 - [ ] ESLint configured  
-- [ ] SonarQube analysis made (with screenshot?)  
+- [ ] SonarQube analysis made (with screenshot?)
+- [ ] ...  
 
 **Output:** Codebase meets static quality and style standards.
 
@@ -129,7 +138,8 @@ Automate testing, building, and deployment processes.
 **Checklist:**  
 - [ ] GitHub Actions workflow created  
 - [ ] Unit + integration + E2E tests integrated  (all?) 
-- [ ] Static analysis and coverage reports included  
+- [ ] Static analysis and coverage reports included
+- [ ] ...  
 
 **Output:** Fully automated and maintainable CI/CD pipeline.
 
