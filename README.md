@@ -74,6 +74,7 @@ Validate backend logic independent of database and API.
 - [ ] Black-box tests (EP, BVA, Decision Tables)  
 - [ ] CPR, gender, date, phone, address logic verified  
 - [ ] Statement & branch coverage metrics generated
+- [ ] Create unit tests with pytest
 - [ ] ...  
 
 > ***Marcus Note:***    
