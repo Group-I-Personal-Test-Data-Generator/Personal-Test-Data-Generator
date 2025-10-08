@@ -90,12 +90,22 @@ Validate backend logic independent of database and API.
 Test combined flow between backend, database, and API.
 
 **Checklist:**  
-- [ ] API tested via Postman 
-- [ ] Database queries verified  
-- [ ] Integration automated in CI/CD pipeline (LATER)
-- [ ] ...  
 
-**Output:** Verified and automated integration flow.
+- **API ↔ Database**  
+  - [ ] Flask connects to MariaDB (no errors)  
+  - [ ] Endpoints using DB (e.g. `/address`) return data from `addresses.sql`  
+  - [ ] Data types and values make sense (town = str, etc.)  
+
+- **Client ↔ API**  
+  - [ ] Create Postman collection for all endpoints  
+  - [ ] Validate response structure and key fields (`cpr`, `dob`, `gender`, etc.)  
+  - [ ] Check logical consistency (CPR ↔ DOB, gender parity rule, error handling)  
+  - [ ] Export collection to `tests/integration/api/` for later CI/CD  
+
+- **Later (CI/CD)**  
+  - [ ] Run Postman tests automatically in pipeline  
+
+**Output:** Verified and automated integration flow.  
 
 ---
 
