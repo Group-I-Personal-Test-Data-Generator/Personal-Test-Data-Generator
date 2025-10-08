@@ -6,6 +6,8 @@
 ![Postman](https://img.shields.io/badge/API-Postman-orange?logo=postman)
 ![Playwright](https://img.shields.io/badge/E2E-Playwright-purple?logo=microsoft)
 
+https://docs.google.com/document/d/1GW89MWnAXZi4asn5hTVEzcce-luUpV88KWaRfE0m8N4/edit?tab=t.0
+
 ### Project Overview
 The system generates fake Danish personal data (CPR, name, address, phone) for testing.  
 Originally in PHP + MariaDB, now converted to **?(Python + Flask + MySQL)?**.  
