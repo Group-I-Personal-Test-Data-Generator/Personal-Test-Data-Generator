@@ -132,3 +132,36 @@ Automate testing, building, and deployment processes.
 - [ ] Static analysis and coverage reports included  
 
 **Output:** Fully automated and maintainable CI/CD pipeline.
+
+---
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|:-------|:----------|:-------------|
+| GET | `/cpr` | Returns a fake CPR |
+| GET | `/name-gender` | Returns first name, last name, and gender |
+| GET | `/name-gender-dob` | Returns name, gender, and date of birth |
+| GET | `/cpr-name-gender` | Returns CPR, name, and gender |
+| GET | `/cpr-name-gender-dob` | Returns CPR, name, gender, and date of birth |
+| GET | `/address` | Returns a fake address |
+| GET | `/phone` | Returns a fake phone number |
+| GET | `/person` | Returns all data for one fake person |
+| GET | `/person&n=<number_of_fake_persons>` | Returns fake data for multiple persons (2–100) |
+
+---
+
+## Class FakeInfo – Public Methods
+
+| Method | Return Type | Description |
+|:--------|:-------------|:-------------|
+| `getCPR()` | `str` | Generates a fake CPR number |
+| `getFullNameAndGender()` | `dict` | Returns first name, last name, and gender |
+| `getFullNameGenderAndBirthDate()` | `dict` | Returns name, gender, and date of birth |
+| `getCprFullNameAndGender()` | `dict` | Returns CPR, first name, last name, and gender |
+| `getCprFullNameGenderAndBirthDate()` | `dict` | Returns CPR, name, gender, and date of birth |
+| `getAddress()` | `str` | Returns a fake address |
+| `getPhoneNumber()` | `str` | Returns a fake phone number |
+| `getFakePerson()` | `dict` | Returns all data for one fake person |
+| `getFakePersons(amount: int)` | `list[dict]` | Returns fake data for multiple persons (2–100) |
+
