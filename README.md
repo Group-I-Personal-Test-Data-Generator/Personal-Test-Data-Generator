@@ -1,110 +1,134 @@
-# Personal Test Data Generator – Group I
+# Personal Test Data Generator – Group I  
 ![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python)
 ![Flask](https://img.shields.io/badge/Backend-Flask-lightgrey?logo=flask)
+![MariaDB](https://img.shields.io/badge/Database-MariaDB-blue?logo=mariadb)
 ![Pytest](https://img.shields.io/badge/Tests-Pytest-green?logo=pytest)
-![MySQL](https://img.shields.io/badge/Database-MySQL-blue?logo=mysql)
 ![Postman](https://img.shields.io/badge/API-Postman-orange?logo=postman)
 ![Playwright](https://img.shields.io/badge/E2E-Playwright-purple?logo=microsoft)
+![SonarQube](https://img.shields.io/badge/Static--Analysis-SonarQube-lightblue?logo=sonarqube)
+![GitHub Actions](https://img.shields.io/badge/CI/CD-GitHub%20Actions-black?logo=githubactions)
 
-https://docs.google.com/document/d/1GW89MWnAXZi4asn5hTVEzcce-luUpV88KWaRfE0m8N4/edit?tab=t.0
-
-### Project Overview
-The system generates fake Danish personal data (CPR, name, address, phone) for testing.  
-Originally in PHP + MariaDB, now converted to **?(Python + Flask + MySQL)?**.  
-Focus: testing through unit, integration, and end-to-end levels.
-
-Feel free to use my application code (either directly or as inspiration):
-- Backend (MariaDB / PHP8): https://github.com/arturomorarioja/fake_info/
-- Frontend (JavaScript / CSS3 / HTML5): https://github.com/arturomorarioja/js_fake_info_frontend
-- [Assignment description (PDF)](https://github.com/Group-I-Personal-Test-Data-Generator/Personal-Test-Data-Generator/blob/main/First_Mandatory_Assignment.pdf)
+📄 [Shared Google Docs Group: EP, BVA, Blackbox](https://docs.google.com/document/d/1GW89MWnAXZi4asn5hTVEzcce-luUpV88KWaRfE0m8N4/edit?tab=t.0)
 
 ---
 
-## Domains
+## Overview  
+The system generates **fake Danish personal data** — CPR, name, address, and phone — for software testing.  
+Originally built in **PHP + MariaDB**, now converted to **Python (Flask) + MariaDB** with a focus on **test-driven development** across unit, integration, and end-to-end levels.
 
-### 0. Conversion Domain
-Prepare a working backend for testing.  
-- Convert PHP backend to Python.  
-- Connect to MySQL (or MariaDB?).  
-- Implement API endpoints in Flask (or FastAPI?).  
-- Verify database access and responses manually.  
-
-**Output:** Stable Python + MySQL backend with functional API.
-
-<br>
-
-### 1. Unit Domain
-Test internal logic (no DB/API).  
-- Validate CPR, gender, date of birth, address, phone generation.  
-- Use pytest with black-box and white-box methods.  
-- Run static analysis 
-- Test case values
-
-**Output:** Reliable backend logic and quality metrics.
-
-<br>
-
-### 2. Integration Domain
-Test backend + database + API as one system.  
-- Verify endpoints return consistent, correct data.  
-- Test database retrieval via MySQL.  
-- Automate API tests with Postman and pytest.  
-- Add tests to CI pipeline.  
-
-**Output:** Verified and automated integration flow.
-
-<br>
-
-### 3. System / End-to-End Domain
-Test full workflow through the frontend.  
-- Use Playwright (or Cypress/Selenium).  
-- Validate UI correctly displays API data.  
-- Integrate all test layers in CI/CD.  
-
-**Output:** Fully tested system ready for demo and delivery.
-
----
-
-## Team and Delegation
-
-| GitHub | Usernames | 
-|-----------------|-----------------|
-| [@nathasjafink](https://github.com/nathasjafink) | [@SofieAmalie44](https://github.com/SofieAmalie44) |
-| [@ViktorBach](https://github.com/ViktorBach) | [@ChristianBT96](https://github.com/ChristianBT96) |
-| [@DetGrey](https://github.com/DetGrey) | [@marcus-rk](https://github.com/marcus-rk) |
-
-<br>
-
-| Members | Delegation |
-|----------|--------|
-| ??? | Backend Conversion |
-| ??? | Unit tests + static analysis |
-| ??? | Integration + API testing |
-| ??? | End-to-End + CI/CD |
+Reference sources:  
+- [arturomorarioja's PHP Backend](https://github.com/arturomorarioja/fake_info/)  
+- [arturomorarioja's Frontend (HTML/CSS/JS)](https://github.com/arturomorarioja/js_fake_info_frontend)  
+- [itsLearning Assignment Description (PDF)](https://github.com/Group-I-Personal-Test-Data-Generator/Personal-Test-Data-Generator/blob/main/First_Mandatory_Assignment.pdf)
 
 ---
 
 ## Project Structure
+This is a **temporary outline** of how we plan to organize files and folders for the assignment. 
 ```
-...
-/backend
 /frontend
+/backend
 /database
-/tests/unit
-/tests/integration
-/tests/e2e
-/.github/workflows
+/tests
+├── /unit
+├── /integration
+├── /e2e
+└── /api
+/.github
+└── /workflows
+/docs
+├── /test-design (black, white, pdf)
+└── /static-analysis (sonar, lint, screenshots)
+.gitignore
 README.md
-...
 ```
 
 ---
 
-## Checklist
-- [x] Organization / Repository created
-- [ ] Backend converted to Python  
-- [ ] Database connected  
-- [ ] Unit tests & static analysis  
-- [ ] Integration tests & CI setup  
-- [ ] E2E tests & CI/CD pipeline  
-- [ ] Report and presentation complete
+## Domain Responsibilities
+
+### 1. Backend Conversion  
+**Responsible:** [@ChristianBT96](https://github.com/ChristianBT96) + ChatGPT 5 Plus  
+
+Convert PHP backend to Python (Flask) and connect to MariaDB.
+
+**Checklist:**  
+- [x] Organization + Repository created
+- [ ] Folder structure created
+- [ ] Backend logic converted
+- [ ] Flask REST API endpoints implemented  
+- [ ] MariaDB connection established  
+- [ ] Manual API + DB verification  
+
+**Output:** Stable Flask + MariaDB backend.
+
+---
+
+### 2. Unit Testing  
+**Responsible:** [@ViktorBach](https://github.com/ViktorBach), [@SofieAmalie44](https://github.com/SofieAmalie44), ([@ChristianBT96](https://github.com/ChristianBT96))  
+
+Validate backend logic independent of database and API.
+
+**Checklist:**  
+- [ ] White-box tests (statement & branch coverage)  
+- [ ] Black-box tests (EP, BVA, Decision Tables)  
+- [ ] CPR, gender, date, phone, address logic verified  
+- [ ] Statement & branch coverage metrics generated  
+
+**Output:** Reliable backend logic validated through automated tests.
+
+---
+
+### 3. Integration Testing  
+**Responsible:** [@marcus-rk](https://github.com/marcus-rk)  
+
+Test combined flow between backend, database, and API.
+
+**Checklist:**  
+- [ ] API tested via Postman 
+- [ ] Database queries verified  
+- [ ] Integration automated in CI/CD pipeline (LATER)  
+
+**Output:** Verified and automated integration flow.
+
+---
+
+### 4. End-to-End Testing  
+**Responsible:** [@DetGrey](https://github.com/DetGrey), [@nathasjafink](https://github.com/nathasjafink)  
+
+Validate complete system behavior through the frontend.
+
+**Checklist:**  
+- [ ] Playwright / Cypress configured  
+- [ ] UI displays API data correctly  
+- [ ] “Happy path” tested end-to-end  
+- [ ] Integrated into CI/CD  (LATER) 
+
+**Output:** Full system tested and validated.
+
+---
+
+### 5. Static Testing & Quality Assurance  
+**Responsible:** [@SofieAmalie44](https://github.com/SofieAmalie44)  
+
+Ensure maintainable and consistent code quality.
+
+**Checklist:**  
+- [ ] ESLint configured  
+- [ ] SonarQube analysis made (with screenshot?)  
+
+**Output:** Codebase meets static quality and style standards.
+
+---
+
+### 6. CI/CD/CT Pipeline  
+**Responsible:** ALL  
+
+Automate testing, building, and deployment processes.
+
+**Checklist:**  
+- [ ] GitHub Actions workflow created  
+- [ ] Unit + integration + E2E tests integrated  (all?) 
+- [ ] Static analysis and coverage reports included  
+
+**Output:** Fully automated and maintainable CI/CD pipeline.
