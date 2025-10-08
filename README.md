@@ -31,9 +31,8 @@ This is a **temporary outline** of how we plan to organize files and folders for
 /database
 /tests
 ├── /unit
-├── /integration
-├── /e2e
-└── /api
+├── /integration(api)
+└── /e2e
 /.github
 └── /workflows
 /docs
