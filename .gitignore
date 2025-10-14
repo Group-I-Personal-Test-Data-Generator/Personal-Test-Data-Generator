@@ -1,0 +1,40 @@
+# -----------------------------
+# Python / Flask backend
+# -----------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.log
+*.sqlite3
+*.db
+
+# Virtual environment
+.venv/
+venv/
+env/
+ENV/
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+
+# Local environment / secrets
+.env
+.env.*
+!.env.sample            # Keep template for others
+
+# Coverage / test cache
+.coverage
+.cache/
+pytest_cache/
+htmlcov/
+
+# IDE / Editor / OS noise
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
