@@ -6,8 +6,8 @@ from dataclasses import dataclass
 from datetime import date, timedelta
 from typing import Any, Dict, List, Optional, Tuple
 
-from ..repositories.settings import Settings
-from ..repositories.towns_repository import pick_random_town
+from repositories.settings import Settings
+from repositories.towns_repository import pick_random_town
 
 # Names cache loaded at import time based on env path (via Settings)
 _SETTINGS = Settings.from_env()
