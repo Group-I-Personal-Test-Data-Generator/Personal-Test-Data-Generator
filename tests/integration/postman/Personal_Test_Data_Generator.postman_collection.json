@@ -1,0 +1,763 @@
+{
+	"info": {
+		"_postman_id": "297067f3-9e50-46e6-870f-c2b52abd6cdb",
+		"name": "Personal Test Data Generator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39301081"
+	},
+	"item": [
+		{
+			"name": "person",
+			"item": [
+				{
+					"name": "Generate Multiple Persons - 400 Bad params",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status 400 Bad Request\", () => {",
+									"  pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response is JSON\", () => {",
+									"  pm.response.to.be.json;",
+									"});",
+									"",
+									"const body = pm.response.json();",
+									"",
+									"pm.test(\"Has correct error message for invalid n\", () => {",
+									"  pm.expect(body).to.have.property(\"error\", \"n must be an integer\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/person?n=abc",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"person"
+							],
+							"query": [
+								{
+									"key": "n",
+									"value": "abc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate One Fake Person",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const PERSON_KEYS = [\"CPR\", \"firstName\", \"lastName\", \"gender\", \"birthDate\", \"address\", \"phoneNumber\"];",
+									"const ADDRESS_KEYS = [\"street\", \"number\", \"floor\", \"door\", \"postal_code\", \"town_name\"];",
+									"const ALLOWED_GENDERS = [\"male\", \"female\"];",
+									"const CPR_REGEX = /^\\d{10}$/;",
+									"const ISO_DATE_REGEX = /^\\d{4}-\\d{2}-\\d{2}$/;",
+									"const PHONE_REGEX = /^\\d{8}$/;",
+									"",
+									"pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
+									"pm.test(\"JSON body\", () => pm.response.to.be.json);",
+									"",
+									"const body = pm.response.json();",
+									"",
+									"pm.test(\"Response is a single person object\", () => {",
+									"    pm.expect(body).to.be.an(\"object\");",
+									"    PERSON_KEYS.forEach(k => pm.expect(body, `Missing field: ${k}`).to.have.property(k));",
+									"});",
+									"",
+									"pm.test(\"Address has expected fields\", () => {",
+									"    const addr = body.address;",
+									"    pm.expect(addr).to.be.an(\"object\");",
+									"    ADDRESS_KEYS.forEach(k => pm.expect(addr, `Missing field: ${k}`).to.have.property(k));",
+									"});",
+									"",
+									"pm.test(\"CPR is 10 digits\", () => {",
+									"    pm.expect(body.CPR).to.match(/^\\d{10}$/);",
+									"});",
+									"",
+									"pm.test(\"Gender is valid and matches CPR parity\", () => {",
+									"    pm.expect(ALLOWED_GENDERS).to.include(body.gender);",
+									"    const lastDigit = Number(body.CPR.slice(-1));",
+									"    const isEven = lastDigit % 2 === 0;",
+									"    if (body.gender === \"female\") {",
+									"        pm.expect(isEven, `Expected even CPR last digit for female, got ${lastDigit}`).to.be.true;",
+									"    } else {",
+									"        pm.expect(isEven, `Expected odd CPR last digit for male, got ${lastDigit}`).to.be.false;",
+									"    }",
+									"});",
+									"",
+									"// CPR and date of birth consistency",
+									"pm.test(\"CPR date matches birthDate\", () => {",
+									"    const cprDate = body.CPR.substring(0, 6);",
+									"    const [year, month, day] = body.birthDate.split(\"-\");",
+									"    const dobAsCpr = day + month + year.slice(-2);",
+									"    pm.expect(cprDate, `CPR date (${cprDate}) does not match birthDate (${dobAsCpr})`).to.eql(dobAsCpr);",
+									"});",
+									"",
+									"pm.test(\"birthDate is ISO yyyy-mm-dd\", () => {",
+									"    pm.expect(body.birthDate).to.match(ISO_DATE_REGEX);",
+									"});",
+									"",
+									"pm.test(\"phoneNumber is 8 digits\", () => {",
+									"    pm.expect(body.phoneNumber).to.match(/^\\d{8}$/);",
+									"});",
+									"",
+									"pm.test(\"postal_code is 4 digits\", () => {",
+									"    pm.expect(body.address.postal_code).to.match(/^\\d{4}$/);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/person",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"person"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Multiple Persons",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const PERSON_KEYS = [\"CPR\", \"firstName\", \"lastName\", \"gender\", \"birthDate\", \"address\", \"phoneNumber\"];",
+									"const ADDRESS_KEYS = [\"street\", \"number\", \"floor\", \"door\", \"postal_code\", \"town_name\"];",
+									"const ALLOWED_GENDERS = [\"male\", \"female\"];",
+									"const CPR_REGEX = /^\\d{10}$/;",
+									"const ISO_DATE_REGEX = /^\\d{4}-\\d{2}-\\d{2}$/;",
+									"const PHONE_REGEX = /^\\d{8}$/;",
+									"",
+									"const N = Number(pm.environment.get(\"DEFAULT_N\")) || 5;",
+									"",
+									"pm.test(\"Precondition: N is between 2 and 100\", () => {",
+									"  pm.expect(N).to.be.within(2, 100);",
+									"});",
+									"",
+									"pm.test(\"Status is 200 OK\", () => pm.response.to.have.status(200));",
+									"pm.test(\"Response is JSON\", () => pm.response.to.be.json);",
+									"",
+									"const body = pm.response.json();",
+									"",
+									"pm.test(\"Returns an array\", () => {",
+									"    pm.expect(body).to.be.an(\"array\");",
+									"});",
+									"",
+									"pm.test(`Array length matches ?n=${N}`, () => {",
+									"    pm.expect(body.length).to.eql(N);",
+									"});",
+									"",
+									"const first = body[0];",
+									"",
+									"pm.test(\"First person has expected fields\", () => {",
+									"    PERSON_KEYS.forEach(k => pm.expect(first, `Missing field: ${k}`).to.have.property(k));",
+									"});",
+									"",
+									"pm.test(\"Address has expected fields\", () => {",
+									"    const addr = first.address;",
+									"    ADDRESS_KEYS.forEach(k => pm.expect(addr, `Missing field: ${k}`).to.have.property(k));",
+									"});",
+									"",
+									"pm.test(\"CPR is 10 digits\", () => {",
+									"    pm.expect(first.CPR).to.match(CPR_REGEX);",
+									"});",
+									"",
+									"pm.test(\"Gender valid and CPR parity matches\", () => {",
+									"    pm.expect(ALLOWED_GENDERS).to.include(first.gender);",
+									"    const lastDigit = Number(first.CPR.slice(-1));",
+									"    const isEven = lastDigit % 2 === 0;",
+									"    if (first.gender === \"female\") {",
+									"        pm.expect(isEven, `Expected even CPR last digit for female, got ${lastDigit}`).to.be.true;",
+									"    } else {",
+									"        pm.expect(isEven, `Expected odd CPR last digit for male, got ${lastDigit}`).to.be.false;",
+									"    }",
+									"});",
+									"",
+									"pm.test(\"CPR date matches birthDate (ddmmyy)\", () => {",
+									"    const cprDate = first.CPR.substring(0, 6);",
+									"    const [year, month, day] = first.birthDate.split(\"-\");",
+									"    const dobAsCpr = day + month + year.slice(-2);",
+									"    pm.expect(cprDate, `CPR date (${cprDate}) != birthDate (${dobAsCpr})`).to.eql(dobAsCpr);",
+									"});",
+									"",
+									"pm.test(\"birthDate and phone formats valid\", () => {",
+									"    pm.expect(first.birthDate).to.match(ISO_DATE_REGEX);",
+									"    pm.expect(first.phoneNumber).to.match(PHONE_REGEX);",
+									"    pm.expect(first.address.postal_code).to.match(/^\\d{4}$/);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/person?n={{DEFAULT_N}}",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"person"
+							],
+							"query": [
+								{
+									"key": "n",
+									"value": "{{DEFAULT_N}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Service is up",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
+							"pm.test(\"JSON body\", () => pm.response.to.be.json);",
+							"const body = pm.response.json();",
+							"",
+							"pm.test(\"Status is ok\", () => {",
+							"  pm.expect(body).to.have.property(\"status\", \"ok\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/health",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Fake CPR",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const CPR_KEYS = [\"CPR\"];",
+							"",
+							"pm.test(\"Status is 200 OK\", () => pm.response.to.have.status(200));",
+							"pm.test(\"Response is JSON\", () => pm.response.to.be.json);",
+							"",
+							"const body = pm.response.json();",
+							"",
+							"pm.test(\"Response has CPR field\", () => {",
+							"    CPR_KEYS.forEach(k => pm.expect(body, `Missing field: ${k}`).to.have.property(k));",
+							"});",
+							"",
+							"pm.test(\"CPR value is 10 digits\", () => {",
+							"    pm.expect(body.CPR, \"CPR format\").to.match(/^\\d{10}$/);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/cpr",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"cpr"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Random Name & Gender",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const NAME_GENDER_KEYS = [\"firstName\", \"lastName\", \"gender\"];",
+							"const ALLOWED_GENDERS = [\"male\", \"female\"];",
+							"",
+							"pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
+							"pm.test(\"JSON body\", () => pm.response.to.be.json);",
+							"",
+							"const body = pm.response.json();",
+							"",
+							"pm.test(\"Has expected fields\", () => {",
+							"    NAME_GENDER_KEYS.forEach(k => pm.expect(body, `Missing field: ${k}`).to.have.property(k));",
+							"});",
+							"",
+							"pm.test(\"Fields are of type string\", () => {",
+							"    pm.expect(body.firstName, \"firstName\").to.be.a(\"string\");",
+							"    pm.expect(body.lastName, \"lastName\").to.be.a(\"string\");",
+							"    pm.expect(body.gender, \"gender\").to.be.a(\"string\");",
+							"});",
+							"",
+							"pm.test(\"Gender is male or female\", () => {",
+							"    pm.expect(ALLOWED_GENDERS, \"Unexpected gender value\").to.include(body.gender);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/name-gender",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"name-gender"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Name, Gender & Birth Date",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const NAME_GENDER_DOB_KEYS = [\"firstName\", \"lastName\", \"gender\", \"birthDate\"];",
+							"const ALLOWED_GENDERS = [\"male\", \"female\"];",
+							"const ISO_DATE_REGEX = /^\\d{4}-\\d{2}-\\d{2}$/;",
+							"",
+							"pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
+							"pm.test(\"JSON body\", () => pm.response.to.be.json);",
+							"",
+							"const body = pm.response.json();",
+							"",
+							"pm.test(\"Has expected fields\", () => {",
+							"    NAME_GENDER_DOB_KEYS.forEach(k => pm.expect(body, `Missing field: ${k}`).to.have.property(k));",
+							"});",
+							"",
+							"pm.test(\"Fields are of type string\", () => {",
+							"    NAME_GENDER_DOB_KEYS.forEach(k => pm.expect(body[k], `${k} is not string`).to.be.a(\"string\"));",
+							"});",
+							"",
+							"pm.test(\"Gender is male or female\", () => {",
+							"    pm.expect(ALLOWED_GENDERS, \"Unexpected gender value\").to.include(body.gender);",
+							"});",
+							"",
+							"pm.test(\"BirthDate is ISO formatted yyyy-mm-dd\", () => {",
+							"    pm.expect(body.birthDate, \"birthDate not in ISO format\").to.match(ISO_DATE_REGEX);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/name-gender-dob",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"name-gender-dob"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate CPR, Name & Gender",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const CPR_NAME_GENDER_KEYS = [\"CPR\", \"firstName\", \"lastName\", \"gender\"];",
+							"const ALLOWED_GENDERS = [\"male\", \"female\"];",
+							"const CPR_REGEX = /^\\d{10}$/;",
+							"",
+							"pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
+							"pm.test(\"JSON body\", () => pm.response.to.be.json);",
+							"",
+							"const body = pm.response.json();",
+							"",
+							"pm.test(\"Has expected fields\", () => {",
+							"    CPR_NAME_GENDER_KEYS.forEach(k => pm.expect(body, `Missing field: ${k}`).to.have.property(k));",
+							"});",
+							"",
+							"pm.test(\"Fields are of type string\", () => {",
+							"    CPR_NAME_GENDER_KEYS.forEach(k => pm.expect(body[k], `${k} not string`).to.be.a(\"string\"));",
+							"});",
+							"",
+							"pm.test(\"Gender is male or female\", () => {",
+							"    pm.expect(ALLOWED_GENDERS, \"Unexpected gender value\").to.include(body.gender);",
+							"});",
+							"",
+							"pm.test(\"CPR is 10 digits\", () => {",
+							"    pm.expect(body.CPR).to.match(/^\\d{10}$/);",
+							"});",
+							"",
+							"pm.test(\"CPR parity matches gender\", () => {",
+							"    const lastDigit = Number(body.CPR.slice(-1));",
+							"    const isEven = lastDigit % 2 === 0;",
+							"    const gender = body.gender.toLowerCase();",
+							"",
+							"    if (gender === \"female\") {",
+							"        pm.expect(isEven, `Expected even CPR last digit for female, got ${lastDigit}`).to.be.true;",
+							"    } else if (gender === \"male\") {",
+							"        pm.expect(isEven, `Expected odd CPR last digit for male, got ${lastDigit}`).to.be.false;",
+							"    } else {",
+							"        pm.expect.fail(`Unexpected gender value: ${gender}`);",
+							"    }",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/cpr-name-gender",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"cpr-name-gender"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate CPR, Name, Gender & Birth Date",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const CPR_NAME_GENDER_DOB_KEYS = [\"CPR\", \"firstName\", \"lastName\", \"gender\", \"birthDate\"];",
+							"const ALLOWED_GENDERS = [\"male\", \"female\"];",
+							"const CPR_REGEX = /^\\d{10}$/;",
+							"const ISO_DATE_REGEX = /^\\d{4}-\\d{2}-\\d{2}$/;",
+							"",
+							"pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
+							"pm.test(\"JSON body\", () => pm.response.to.be.json);",
+							"",
+							"const body = pm.response.json();",
+							"",
+							"pm.test(\"Has expected fields\", () => {",
+							"    CPR_NAME_GENDER_DOB_KEYS.forEach(k => pm.expect(body, `Missing field: ${k}`).to.have.property(k));",
+							"});",
+							"",
+							"pm.test(\"Fields are of type string\", () => {",
+							"    CPR_NAME_GENDER_DOB_KEYS.forEach(k => pm.expect(body[k], `${k} not string`).to.be.a(\"string\"));",
+							"});",
+							"",
+							"pm.test(\"Gender is male or female\", () => {",
+							"    pm.expect(ALLOWED_GENDERS, \"Unexpected gender value\").to.include(body.gender);",
+							"});",
+							"",
+							"pm.test(\"CPR is 10 digits\", () => {",
+							"    pm.expect(body.CPR).to.match(/^\\d{10}$/);",
+							"});",
+							"",
+							"pm.test(\"CPR matches gender\", () => {",
+							"    const lastDigit = Number(body.CPR.slice(-1));",
+							"    const isEven = lastDigit % 2 === 0;",
+							"    const gender = body.gender.toLowerCase();",
+							"",
+							"    if (gender === \"female\") {",
+							"        pm.expect(isEven, `Expected even last digit for female, got ${lastDigit}`).to.be.true;",
+							"    } else if (gender === \"male\") {",
+							"        pm.expect(isEven, `Expected odd last digit for male, got ${lastDigit}`).to.be.false;",
+							"    } else {",
+							"        pm.expect.fail(`Unexpected gender value: ${gender}`);",
+							"    }",
+							"});",
+							"",
+							"pm.test(\"birthDate is ISO yyyy-mm-dd\", () => {",
+							"    pm.expect(body.birthDate).to.match(ISO_DATE_REGEX);",
+							"});",
+							"",
+							"// CPR matches date of birth",
+							"pm.test(\"CPR date matches birthDate\", () => {",
+							"    // First six digits of CPR represent DDMMYY",
+							"    const cprDate = body.CPR.substring(0, 6);",
+							"",
+							"    // Extract YYYY-MM-DD parts from birthDate",
+							"    const [year, month, day] = body.birthDate.split(\"-\");",
+							"",
+							"    // Convert birthDate into DDMMYY format",
+							"    const dobAsCpr = day + month + year.slice(-2);",
+							"",
+							"    // Compare CPR date part and birthDate (should match)",
+							"    pm.expect(cprDate, `CPR date (${cprDate}) does not match birthDate (${dobAsCpr})`)",
+							"        .to.eql(dobAsCpr);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/cpr-name-gender-dob",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"cpr-name-gender-dob"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Fake Address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const ADDRESS_KEYS = [\"street\", \"number\", \"floor\", \"door\", \"postal_code\", \"town_name\"];",
+							"",
+							"const body = pm.response.json();",
+							"",
+							"pm.test(\"Has expected fields\", () => {",
+							"    ADDRESS_KEYS.forEach(k => pm.expect(body, `Missing field: ${k}`).to.have.property(k));",
+							"});",
+							"",
+							"// Validating types (floor/door can be null or string)",
+							"pm.test(\"Street and number are strings\", () => {",
+							"    pm.expect(body.street).to.be.a(\"string\").and.not.empty;",
+							"    pm.expect(body.number).to.be.a(\"string\").and.not.empty;",
+							"});",
+							"",
+							"pm.test(\"Floor and door are string or null\", () => {",
+							"    const floorValid = body.floor === null || typeof body.floor === \"string\";",
+							"    const doorValid = body.door === null || typeof body.door === \"string\";",
+							"    pm.expect(floorValid, \"floor must be string or null\").to.be.true;",
+							"    pm.expect(doorValid, \"door must be string or null\").to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Postal code and town name are strings\", () => {",
+							"    pm.expect(body.postal_code).to.be.a(\"string\");",
+							"    pm.expect(body.town_name).to.be.a(\"string\").and.not.empty;",
+							"});",
+							"",
+							"pm.test(\"Postal code is 4 digits\", () => {",
+							"    pm.expect(body.postal_code).to.match(/^\\d{4}$/);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/address",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"address"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate Fake Phone Number",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const PHONE_NUMBER_KEYS = [\"phoneNumber\"];",
+							"const PHONE_REGEX = /^\\d{8}$/;",
+							"",
+							"pm.test(\"200 OK\", () => pm.response.to.have.status(200));",
+							"pm.test(\"JSON body\", () => pm.response.to.be.json);",
+							"",
+							"const body = pm.response.json();",
+							"",
+							"pm.test(\"Has phoneNumber field\", () => {",
+							"    PHONE_NUMBER_KEYS.forEach(k => pm.expect(body, `Missing field: ${k}`).to.have.property(k));",
+							"});",
+							"",
+							"pm.test(\"phoneNumber is of type string\", () => {",
+							"    pm.expect(body.phoneNumber).to.be.a(\"string\");",
+							"});",
+							"",
+							"pm.test(\"phoneNumber is 8 digits\", () => {",
+							"    pm.expect(body.phoneNumber).to.match(/^\\d{8}$/);",
+							"});",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/phone",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"phone"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "404 - Not Found",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status 404\", () => pm.response.to.have.status(404));",
+							"pm.test(\"Body is JSON with error field\", () => {",
+							"  const json = pm.response.json();",
+							"  pm.expect(json).to.have.property(\"error\", \"Not found\");",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}",
+					"host": [
+						"{{BASE_URL}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

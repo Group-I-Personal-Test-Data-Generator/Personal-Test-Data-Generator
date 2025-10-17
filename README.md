@@ -53,14 +53,13 @@ Convert PHP backend to Python (Flask) and connect to MariaDB.
 
 **Checklist:**  
 - [x] Organization + Repository created
-- [ ] Folder structure created
-- [ ] Backend logic converted
-- [ ] Flask REST API endpoints implemented  
-- [ ] MariaDB connection established  
-- [ ] Manual API + DB verification  
-- [ ] ...  
+- [x] Folder structure created
+- [x] Backend logic converted
+- [x] Flask REST API endpoints implemented  
+- [x] db connection established  
+- [x] Manual API + DB verification   
 
-**Output:** Stable Flask + MariaDB backend.
+**Output:** Stable Flask + db backend.
 
 ---
 
@@ -88,23 +87,29 @@ Validate backend logic independent of database and API.
 ### 3. Integration Testing  
 **Responsible:** [@marcus-rk](https://github.com/marcus-rk)  
 
-Test combined flow between backend, database, and API.
+Integration testing verifies that all main system layers work together correctly
 
 **Checklist:**  
 
 - **API ↔ Database**  
-  - [ ] Flask connects to MariaDB (no errors)  
-  - [ ] Endpoints using DB (e.g. `/address`) return data from `addresses.sql`  
-  - [ ] Data types and values make sense (town = str, etc.)  
+  - [x] Flask successfully connects to the local SQLite database (no errors)  
+  - [x] Endpoints using the DB (e.g. /address, /person) return valid data from addresses.sql  
+  - [x] Returned data types and relationships are correct (town_name matches postal code, etc.)
+  - [x] Integration tests located in tests/integration/ pass
+    ```bash
+    pytest -q tests/integration
+    ```
 
 - **Client ↔ API**  
-  - [ ] Create Postman collection for all endpoints  
-  - [ ] Validate response structure and key fields (`cpr`, `dob`, `gender`, etc.)  
-  - [ ] Check logical consistency (CPR ↔ DOB, gender parity rule, error handling)  
-  - [ ] Export collection to `tests/integration/api/` for later CI/CD  
+  - [x] Create Postman collection for all endpoints  
+  - [x] Each test validates status codes, JSON structure, and key fields (CPR, birthDate, gender, etc.) 
+  - [x] Logical consistency verified (CPR ↔ birthDate, gender ↔ parity rule)
+  - [x] Error handling tested for invalid query parameters (?n=abc, ?n=0, ?n=101)
+  - [x] Collection and environment exported to tests/integration/postman/
+  - [ ] Share Collection and environment through Postman organization
 
 - **Later (CI/CD)**  
-  - [ ] Run Postman tests automatically in pipeline  
+  - [ ] Run pytest and Postman collection automatically in pipeline 
 
 **Output:** Verified and automated integration flow.  
 
