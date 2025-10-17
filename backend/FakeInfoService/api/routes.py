@@ -1,7 +1,7 @@
 from __future__ import annotations
 from flask import Blueprint, current_app, jsonify, request
-from repositories.settings import get_conn
-from services.fake_info import (
+from ..repositories.settings import get_conn
+from ..services.fake_info import (
     build_person, random_gender, random_birthdate,
     make_cpr, random_name, random_phone, random_address
 )

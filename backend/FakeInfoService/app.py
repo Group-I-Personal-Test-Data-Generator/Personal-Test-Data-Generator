@@ -1,8 +1,9 @@
 from flask import Flask
 from flask_cors import CORS
-from database.initialize import ensure_db_loaded
-from repositories.settings import Settings
-from api.routes import api_bp
+
+from .database.initialize import ensure_db_loaded
+from .repositories.settings import Settings
+from .api.routes import api_bp
 
 def create_app() -> Flask:
     settings = Settings.from_env()
