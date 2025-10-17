@@ -20,6 +20,18 @@ def create_app() -> Flask:
     # Blueprints
     app.register_blueprint(api_bp)
 
+    @app.errorhandler(400)
+    def handle_bad_request(e):
+        return {"error": "Bad request"}, 400
+
+    @app.errorhandler(404)
+    def handle_not_found(e):
+        return {"error": "Not found"}, 404
+
+    @app.errorhandler(500)
+    def handle_internal_error(e):
+        return {"error": "Internal server error"}, 500
+
     @app.get("/health")
     def health():
         return {"status": "ok"}, 200
