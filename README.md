@@ -121,8 +121,8 @@ Integration testing verifies that all main system layers work together correctly
 Validate complete system behavior through the frontend.
 
 **Checklist:**  
-- [ ] Playwright / Cypress configured  
-- [ ] UI displays API data correctly  
+- [x] Playwright / Cypress configured  
+- [x] UI displays API data correctly  
 - [ ] “Happy path” tested end-to-end  
 - [ ] Integrated into CI/CD  (LATER)
 - [ ] ...  
