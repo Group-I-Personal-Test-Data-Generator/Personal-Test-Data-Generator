@@ -27,7 +27,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run unit tests
-        run: pytest -q tests/unit
+        run: pytest tests/unit
 
       - name: Start Flask app (background)
         run: |
@@ -53,7 +53,7 @@ jobs:
 
       - name: Run integration tests
       # if your tests need the BASE_URL env, it's already set above
-        run: pytest -q tests/integration
+        run: pytest tests/integration
 
       - name: Show app log on failure
         if: failure()
