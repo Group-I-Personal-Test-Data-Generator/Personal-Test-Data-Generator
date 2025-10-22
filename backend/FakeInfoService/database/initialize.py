@@ -2,7 +2,7 @@ from __future__ import annotations
 import re
 from typing import List, Tuple
 
-from repositories.settings import Settings, get_conn
+from backend.FakeInfoService.repositories.settings import Settings, get_conn
 
 SCHEMA_SQL = """
 CREATE TABLE IF NOT EXISTS postal_code (
