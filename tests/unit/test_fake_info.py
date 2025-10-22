@@ -13,7 +13,7 @@ def mock_conn():
     """Fake DB connection returning a deterministic town."""
     def fake_pick_random_town(_):
         return ("8000", "Aarhus")
-    mod.pick_random_town = fake_pick_random_town
+    #mod.pick_random_town = fake_pick_random_town
     return SimpleNamespace()
 
 @pytest.fixture(autouse=True)
