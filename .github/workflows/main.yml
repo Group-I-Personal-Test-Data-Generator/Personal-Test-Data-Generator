@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      BASE_URL: http://127.0.0.1:5002
+      BASE_URL: http://127.0.0.1:5002       # Flask API
+      FRONTEND_URL: http://127.0.0.1:5500   # Static frontend
 
     steps:
       - uses: actions/checkout@v4
@@ -39,21 +40,23 @@ jobs:
           import socket, time, sys
           deadline = time.time() + 60
           while time.time() < deadline:
-              with socket.socket() as s:
-                  s.settimeout(1)
-                  try:
-                      s.connect(("127.0.0.1", 5002))
-                      sys.exit(0)
-                  except Exception:
-                      time.sleep(1)
+              try:
+                  import socket as s
+                  sock = s.socket()
+                  sock.settimeout(1)
+                  sock.connect(("127.0.0.1", 5002))
+                  sock.close()
+                  sys.exit(0)
+              except Exception:
+                  time.sleep(1)
           sys.exit("Server did not start on port 5002 within 60s")
           PY
 
       - name: Pytest integration tests
         run: pytest tests/integration
 
-      # --- Postman (Newman) integration tests ---
-      - name: Set up Node for Newman
+      # ---------- Postman (Newman) ----------
+      - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
@@ -61,7 +64,7 @@ jobs:
       - name: Install Newman
         run: npm install -g newman
 
-      - name: Run Postman collection with Newman
+      - name: Run Postman collection
         working-directory: tests/integration/postman
         run: |
           newman run Personal_Test_Data_Generator.postman_collection.json \
@@ -78,8 +81,32 @@ jobs:
           path: tests/integration/postman/newman-report.json
           if-no-files-found: warn
 
-      - name: Show app log on failure
+      # ---------- E2E (frontend + backend) ----------
+      - name: Install http-server
+        run: npm install -g http-server
+
+      - name: Start frontend server (background on :5500)
+        run: |
+          nohup http-server ./frontend -p 5500 > /tmp/frontend.log 2>&1 &
+          echo $! > /tmp/frontend.pid
+
+      - name: Wait for frontend on :5500
+        run: |
+          for i in {1..60}; do
+            curl -fsS "${FRONTEND_URL}/" && exit 0
+            sleep 1
+          done
+          echo "Frontend did not start on ${FRONTEND_URL} within 60s"
+          exit 1
+
+      - name: Pytest E2E tests
+        run: pytest tests/e2e
+
+      # ---------- Debug logs on failure ----------
+      - name: Show logs on failure
         if: failure()
         run: |
           echo "==== app.log ===="
           sed -n '1,200p' /tmp/app.log || true
+          echo "==== frontend.log ===="
+          sed -n '1,200p' /tmp/frontend.log || true
