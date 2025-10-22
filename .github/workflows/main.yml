@@ -98,6 +98,9 @@ jobs:
           done
           echo "Frontend did not start on ${FRONTEND_URL} within 60s"
           exit 1
+          
+      - name: Install Playwright browsers
+        run: playwright install
 
       - name: Pytest E2E tests
         run: pytest tests/e2e
