@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # Adjust if your tests read this; harmless if unused.
       BASE_URL: http://127.0.0.1:5002
 
     steps:
@@ -21,12 +20,12 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install deps
+      - name: Install Python deps
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run unit tests
+      - name: Unit tests
         run: pytest tests/unit
 
       - name: Start Flask app (background)
@@ -34,26 +33,50 @@ jobs:
           nohup python app.py > /tmp/app.log 2>&1 &
           echo $! > /tmp/app.pid
 
-      - name: Wait for app to be ready on :5002
+      - name: Wait for app on :5002
         run: |
           python - <<'PY'
           import socket, time, sys
           deadline = time.time() + 60
           while time.time() < deadline:
-              s = socket.socket()
-              try:
+              with socket.socket() as s:
                   s.settimeout(1)
-                  s.connect(("127.0.0.1", 5002))
-                  s.close()
-                  sys.exit(0)
-              except Exception:
-                  time.sleep(1)
+                  try:
+                      s.connect(("127.0.0.1", 5002))
+                      sys.exit(0)
+                  except Exception:
+                      time.sleep(1)
           sys.exit("Server did not start on port 5002 within 60s")
           PY
 
-      - name: Run integration tests
-      # if your tests need the BASE_URL env, it's already set above
+      - name: Pytest integration tests
         run: pytest tests/integration
+
+      # --- Postman (Newman) integration tests ---
+      - name: Set up Node for Newman
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run Postman collection with Newman
+        working-directory: tests/integration/postman
+        run: |
+          newman run Personal_Test_Data_Generator.postman_collection.json \
+            --environment Environment_Pesonal_Test_Data.postman_environment.json \
+            --env-var BASE_URL="${BASE_URL}" \
+            --reporters cli,json \
+            --reporter-json-export newman-report.json
+
+      - name: Upload Newman report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-report
+          path: tests/integration/postman/newman-report.json
+          if-no-files-found: warn
 
       - name: Show app log on failure
         if: failure()
