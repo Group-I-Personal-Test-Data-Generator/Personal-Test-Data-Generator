@@ -38,12 +38,21 @@ def test_generate_name_gender(browser_page):
     verify_field(browser_page, ".genderValue", validation.is_valid_gender)
 
 
-## ------------------------------------------------- TODO NATHASJA HAS THE ONES BELOW
 # 5. **Generate name, gender, and birthdate**
 #    - Select `chkPartialOptions`
 #    - Choose “Name, gender and birthdate”
 #    - Click “Generate”
 #    - Verify name, gender, and DOB fields are shown
+
+def test_generate_name_gender_dob (browser_page):
+    browser_page.click("#chkPartialOptions")
+    browser_page.select_option("#cmdPartialOptions", "name-gender-dob")
+    browser_page.click("input[type=submit]")
+
+    verify_field(browser_page, ".firstNameValue", validation.is_valid_name)
+    verify_field(browser_page, ".lastNameValue", validation.is_valid_name)
+    verify_field(browser_page, ".genderValue", validation.is_valid_gender)
+    verify_field(browser_page, ".dobValue", validation.is_valid_date)
 
 # 6. **Generate CPR, name, and gender**
 #    - Select `chkPartialOptions`
@@ -51,11 +60,33 @@ def test_generate_name_gender(browser_page):
 #    - Click “Generate”
 #    - Verify CPR, name, and gender fields are shown
 
+def test_generate_cpr_name_gender (browser_page):
+    browser_page.click("#chkPartialOptions")
+    browser_page.select_option("#cmdPartialOptions", "cpr-name-gender")
+    browser_page.click("input[type=submit]")
+
+    verify_field(browser_page, ".cprValue", validation.is_valid_cpr)
+    verify_field(browser_page, ".firstNameValue", validation.is_valid_name)
+    verify_field(browser_page, ".lastNameValue", validation.is_valid_name)
+    verify_field(browser_page, ".genderValue", validation.is_valid_gender)
+    
+
 # 7. **Generate CPR, name, gender, and birthdate**
 #    - Select `chkPartialOptions`
 #    - Choose “CPR, name, gender, birthdate”
 #    - Click “Generate”
 #    - Verify all four fields are visible
+
+def test_generate_cpr_name_gender_dob (browser_page):
+    browser_page.click("#chkPartialOptions")
+    browser_page.select_option("#cmdPartialOptions", "cpr-name-gender_dob")
+    browser_page.click("input[type=submit]")
+
+    verify_field(browser_page, ".cprValue", validation.is_valid_cpr)
+    verify_field(browser_page, ".firstNameValue", validation.is_valid_name)
+    verify_field(browser_page, ".lastNameValue", validation.is_valid_name)
+    verify_field(browser_page, ".genderValue", validation.is_valid_gender)
+    verify_field(browser_page, ".dobValue", validation.is_valid_date)
 
 # 8. **Generate address**
 #    - Select `chkPartialOptions`
@@ -63,8 +94,24 @@ def test_generate_name_gender(browser_page):
 #    - Click “Generate”
 #    - Verify street and town fields are shown
 
+def test_generate_address (browser_page):
+    browser_page.click("#chkPartialOptions")
+    browser_page.select_option("#cmdPartialOptions", "address")
+    browser_page.click("input[type=submit]")
+
+    verify_field(browser_page,".streetValue", validation.is_valid_street)
+    verify_field(browser_page,".townValue", validation.is_valid_town)
+
 # 9. **Generate phone number**
 #    - Select `chkPartialOptions`
 #    - Choose “Phone number”
 #    - Click “Generate”
 #    - Verify phone number field is visible
+
+def test_generate_phone_number (browser_page):
+    browser_page.click("#chkPartialOptions")
+    browser_page.select_option("#cmdPartialOptions", "phone")
+    browser_page.click("input[type=submit]")
+
+    verify_field(browser_page,".phoneNumberValue", validation.is_valid_phone_number)
+    
