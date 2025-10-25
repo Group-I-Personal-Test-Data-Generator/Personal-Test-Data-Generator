@@ -66,12 +66,21 @@ const handlePersonData = (data) => {
             dobValue.classList.remove('hidden');
             personCard.querySelector('.dob').classList.remove('hidden');
         }
-        if (item.address !== undefined) {
+        if (item.address !== undefined || item.street !== undefined) {
             const streetValue = personCard.querySelector('.streetValue');
-            streetValue.innerText = `${item.address.street} ${item.address.number}, ${item.address.floor}.${item.address.door}`;
-            streetValue.classList.remove('hidden');
             const townValue = personCard.querySelector('.townValue');
-            townValue.innerText = `${item.address.postal_code} ${item.address.town_name}`;
+
+            if (item.address !== undefined) {
+                // Full person object with nested address
+                streetValue.innerText = `${item.address.street} ${item.address.number}, ${item.address.floor}.${item.address.door}`;
+                townValue.innerText = `${item.address.postal_code} ${item.address.town_name}`;
+            } else {
+                // Flat address object
+                streetValue.innerText = `${item.street} ${item.number}, ${item.floor}.${item.door}`;
+                townValue.innerText = `${item.postal_code} ${item.town_name}`;
+            }
+
+            streetValue.classList.remove('hidden');
             townValue.classList.remove('hidden');
             personCard.querySelector('.address').classList.remove('hidden');
         }

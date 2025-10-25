@@ -1,6 +1,7 @@
 import pytest
 from playwright.sync_api import sync_playwright
 
+# Use "http://127.0.0.1:5500/frontend/index.html" for local live server
 BASE_URL = "http://127.0.0.1:5500/"
 
 @pytest.fixture

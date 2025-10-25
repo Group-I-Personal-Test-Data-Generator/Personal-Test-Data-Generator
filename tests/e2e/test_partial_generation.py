@@ -46,13 +46,13 @@ def test_generate_name_gender(browser_page):
 
 def test_generate_name_gender_dob (browser_page):
     browser_page.click("#chkPartialOptions")
-    browser_page.select_option("#cmdPartialOptions", "name-gender-dob")
+    browser_page.select_option("#cmbPartialOptions", "name-gender-dob")
     browser_page.click("input[type=submit]")
 
     verify_field(browser_page, ".firstNameValue", validation.is_valid_name)
     verify_field(browser_page, ".lastNameValue", validation.is_valid_name)
     verify_field(browser_page, ".genderValue", validation.is_valid_gender)
-    verify_field(browser_page, ".dobValue", validation.is_valid_date)
+    verify_field(browser_page, ".dobValue", validation.is_valid_dob)
 
 # 6. **Generate CPR, name, and gender**
 #    - Select `chkPartialOptions`
@@ -62,7 +62,7 @@ def test_generate_name_gender_dob (browser_page):
 
 def test_generate_cpr_name_gender (browser_page):
     browser_page.click("#chkPartialOptions")
-    browser_page.select_option("#cmdPartialOptions", "cpr-name-gender")
+    browser_page.select_option("#cmbPartialOptions", "cpr-name-gender")
     browser_page.click("input[type=submit]")
 
     verify_field(browser_page, ".cprValue", validation.is_valid_cpr)
@@ -79,14 +79,14 @@ def test_generate_cpr_name_gender (browser_page):
 
 def test_generate_cpr_name_gender_dob (browser_page):
     browser_page.click("#chkPartialOptions")
-    browser_page.select_option("#cmdPartialOptions", "cpr-name-gender_dob")
+    browser_page.select_option("#cmbPartialOptions", "cpr-name-gender-dob")
     browser_page.click("input[type=submit]")
 
     verify_field(browser_page, ".cprValue", validation.is_valid_cpr)
     verify_field(browser_page, ".firstNameValue", validation.is_valid_name)
     verify_field(browser_page, ".lastNameValue", validation.is_valid_name)
     verify_field(browser_page, ".genderValue", validation.is_valid_gender)
-    verify_field(browser_page, ".dobValue", validation.is_valid_date)
+    verify_field(browser_page, ".dobValue", validation.is_valid_dob)
 
 # 8. **Generate address**
 #    - Select `chkPartialOptions`
@@ -96,7 +96,7 @@ def test_generate_cpr_name_gender_dob (browser_page):
 
 def test_generate_address (browser_page):
     browser_page.click("#chkPartialOptions")
-    browser_page.select_option("#cmdPartialOptions", "address")
+    browser_page.select_option("#cmbPartialOptions", "address")
     browser_page.click("input[type=submit]")
 
     verify_field(browser_page,".streetValue", validation.is_valid_street)
@@ -110,7 +110,7 @@ def test_generate_address (browser_page):
 
 def test_generate_phone_number (browser_page):
     browser_page.click("#chkPartialOptions")
-    browser_page.select_option("#cmdPartialOptions", "phone")
+    browser_page.select_option("#cmbPartialOptions", "phone")
     browser_page.click("input[type=submit]")
 
     verify_field(browser_page,".phoneNumberValue", validation.is_valid_phone_number)
