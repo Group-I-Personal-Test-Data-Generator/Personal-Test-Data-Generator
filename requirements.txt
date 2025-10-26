@@ -3,6 +3,4 @@ flask-cors>=4.0.0
 pytest>=8.0.0
 playwright>=1.55.0
 pylint>=2.17.0
-eslint -- IGNORE ---
-npx eslint --init --- IGNORE ---
 sonarqube-scanner>=3.0.0
