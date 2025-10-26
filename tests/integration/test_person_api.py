@@ -2,13 +2,13 @@
 
 # Expected structure of the dataclass Person object returned by /person
 EXPECTED_PERSON_SCHEMA = {
-    "cpr": str,
-    "first_name": str,
-    "last_name": str,
+    "CPR": str,
+    "firstName": str,
+    "lastName": str,
     "gender": str,
-    "birth_date": str,
+    "birthDate": str,
     "address": dict,
-    "phone_number": str,
+    "phoneNumber": str,
 }
 
 # Expected structure of the nested dataclass Address inside Person
@@ -41,8 +41,8 @@ def test_person_endpoint_returns_valid_structure(client):
         assert isinstance(address[field], expected_type), f"Field '{field}' is not of type {expected_type}"
 
     # Format check: basic field sanity
-    assert person_data["cpr"].isdigit() and len(person_data["cpr"]) == 10, "Invalid CPR format"
-    assert person_data["phone_number"].isdigit() and len(person_data["phone_number"]) == 8, "Invalid phone number format"
+    assert person_data["CPR"].isdigit() and len(person_data["CPR"]) == 10, "Invalid CPR format"
+    assert person_data["phoneNumber"].isdigit() and len(person_data["phoneNumber"]) == 8, "Invalid phone number format"
     assert address["postal_code"].isdigit() and len(address["postal_code"]) == 4, "Invalid postal code format"
     assert address["street"] and address["number"] and address["town_name"], "Street, number, or town_name is empty"
 
