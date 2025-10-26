@@ -70,12 +70,12 @@ jobs:
           node-version: "20"
 
       - name: Install JS deps
+        working-directory: frontend
         run: npm install
-        working-directory: ./frontend
 
       - name: Run ESLint (Static Analysis)
-        run: npx eslint **/*.js
-        working-directory: ./frontend
+        working-directory: frontend
+        run: npx eslint "**/*.js"
 
       - name: Install Newman
         run: npm install -g newman
