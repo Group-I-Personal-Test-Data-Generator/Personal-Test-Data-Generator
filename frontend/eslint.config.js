@@ -1,30 +1,34 @@
-import { FlatCompat } from '@eslint/eslintrc';
-const compat = new FlatCompat({ baseDirectory: __dirname });
+import path from "path";
+import { fileURLToPath } from "url";
+import js from "@eslint/js";
+import { FlatCompat } from "@eslint/eslintrc";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Create compat helper for migrating old-style configs
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended
+});
 
 export default [
-  // Extend recommended ESLint rules
+  js.configs.recommended, // built-in recommended ESLint rules
   ...compat.config({
-    extends: ['eslint:recommended'],
-
-    // Define your custom rules here
     rules: {
-      // Example rules you might have used before
-      'no-console': 'warn',           // Warn on console.log
-      'eqeqeq': 'error',              // Require === and !==
-      'curly': 'error',               // Require curly braces for blocks
-      'no-unused-vars': ['warn', { args: 'none' }], // Warn on unused vars
-      // Add any other rules your team wants
+      "no-console": "warn",
+      "eqeqeq": "error",
+      "curly": "error",
+      "no-unused-vars": ["warn", { args: "none" }]
     },
-
     env: {
       browser: true,
       node: true,
       es2021: true
     },
-
     parserOptions: {
-      ecmaVersion: 13,
-      sourceType: 'module'
+      ecmaVersion: "latest",
+      sourceType: "module"
     }
-  }),
+  })
 ];
