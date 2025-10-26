@@ -26,6 +26,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Run Pylint (Static Analysis)
+        run: |
+          pip install pylint
+          pylint backend/FakeInfoService/services/*.py
+
       - name: Unit tests
         run: pytest tests/unit
 
@@ -61,6 +66,12 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Install JS deps
+        run: npm install
+
+      - name: Run ESLint (Static Analysis)
+        run: npx eslint frontend/**/*.js
+
       - name: Install Newman
         run: npm install -g newman
 
@@ -94,6 +105,13 @@ jobs:
 
       - name: Pytest E2E tests
         run: pytest tests/e2e
+
+      - name: SonarQube Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          projectKey: your_project_key
+          organization: your_org_key
+          token: ${{ secrets.SONAR_TOKEN }}
 
       # ---------- Debug logs on failure ----------
       - name: Show logs on failure

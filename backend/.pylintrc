@@ -1,0 +1,27 @@
+[MASTER]
+# Python version
+py-version=3.11
+
+# Directories/files to ignore
+ignore=tests,venv
+
+[MESSAGES CONTROL]
+# Disable some messages that are not relevant for your project
+disable=missing-docstring, invalid-name, too-few-public-methods
+
+[FORMAT]
+# Maximum line length
+max-line-length=120
+
+[BASIC]
+# Naming styles
+variable-naming-style=snake_case
+function-naming-style=snake_case
+class-naming-style=PascalCase
+const-naming-style=UPPER_CASE
+
+[DESIGN]
+# Maximum number of arguments for a function
+max-args=5
+# Maximum number of attributes per class
+max-attributes=10

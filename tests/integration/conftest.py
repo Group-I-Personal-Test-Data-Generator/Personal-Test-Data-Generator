@@ -6,28 +6,30 @@
 # - db_conn: connection to the same database the app uses
 # =============================================================================
 
-import pytest
+
 import sqlite3
+import pytest
+
 
 from app import create_app
 
 @pytest.fixture(scope="session")
 def app():
     """Create the real Flask app once per test session."""
-    app = create_app()
+    flask_app = create_app()
     app.config.update(TESTING=True)
-    return app
+    return flask_app
 
 @pytest.fixture()
-def client(app):
+def client(flask_app):
     """Provides a test client to call API routes directly."""
-    with app.test_client() as c:
+    with flask_app.test_client() as c:
         yield c
 
 @pytest.fixture()
-def db_conn(app):
+def db_conn(flask_app):
     """Connects to the app database for backend verification."""
-    settings = app.config["SETTINGS"]
+    settings = flask_app.config["SETTINGS"]
     db_path = getattr(settings, "sqlite_db_path", None)
     assert db_path, "Expected Settings.db_path to exist for integration tests."
 
