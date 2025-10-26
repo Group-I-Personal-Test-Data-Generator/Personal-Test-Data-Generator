@@ -71,9 +71,11 @@ jobs:
 
       - name: Install JS deps
         run: npm install
+        working-directory: ./frontend
 
       - name: Run ESLint (Static Analysis)
-        run: npx eslint frontend/**/*.js
+        run: npx eslint **/*.js
+        working-directory: ./frontend
 
       - name: Install Newman
         run: npm install -g newman
@@ -91,8 +93,9 @@ jobs:
 
       - name: Start frontend server (background on :5500)
         run: |
-          nohup http-server ./frontend -p 5500 > /tmp/frontend.log 2>&1 &
+          nohup http-server -p 5500 > /tmp/frontend.log 2>&1 &
           echo $! > /tmp/frontend.pid
+        working-directory: ./frontend
 
       - name: Wait for frontend on :5500
         run: |
