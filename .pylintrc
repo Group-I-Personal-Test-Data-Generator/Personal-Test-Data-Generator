@@ -8,7 +8,7 @@ ignore=tests,venv
 [MESSAGES CONTROL]
 # Disable specific pylint warnings
 #  missing-docstring: C0114, C0115, C0116
-disable=missing-docstring, invalid-name, too-few-public-methods
+disable=missing-docstring, invalid-name, too-few-public-methods, pointless-string-statement
 
 [FORMAT]
 # Maximum line length
