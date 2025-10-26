@@ -75,7 +75,9 @@ jobs:
 
       - name: Run ESLint (Static Analysis)
         working-directory: frontend
-        run: npx eslint "**/*.js"
+        run: |
+          npm ci
+          npx eslint "**/*.js"
 
       - name: Install Newman
         run: npm install -g newman
