@@ -14,10 +14,10 @@ import pytest
 from app import create_app
 
 @pytest.fixture(scope="session")
-def app():
+def flask_app():
     """Create the real Flask app once per test session."""
     flask_app = create_app()
-    app.config.update(TESTING=True)
+    flask_app.config.update(TESTING=True)
     return flask_app
 
 @pytest.fixture()
