@@ -97,7 +97,7 @@ def random_name(gender: str) -> Tuple[str, str]:
     last = random.choice(NAMES["last"]) if NAMES["last"] else "Nielsen"
     return first, last
 
-# TODO: This found an error in integration test with length 9
+
 def random_phone() -> str:
     prefix = random.choice(DK_PHONE_PREFIXES)   # two digits in your code
     rest = f"{random.randint(0, 999_999):06d}"  # exactly 6 digits
