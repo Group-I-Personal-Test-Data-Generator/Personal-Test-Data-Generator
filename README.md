@@ -68,7 +68,7 @@ python app.py
 ---
 
 ### 2. CI/CD Pipeline
-**Responsible:** [@ChristianBT96](https://github.com/ChristianBT96)
+**Responsible:** ALL, [@ChristianBT96](https://github.com/ChristianBT96)
 
 - [x] GitHub Actions workflow → main.yml
 - [x] Triggered on push and pull main
@@ -98,6 +98,7 @@ pytest -q tests/unit
 - **API ↔ Database**  
   - [x] tests/integration 
   - [x] pyTest for testing API ↔ SQLite
+- **API ↔ Client**  
   - [x] Postman for testing API ↔ Client
   - [x] Postman with Newman in pipeline
 
