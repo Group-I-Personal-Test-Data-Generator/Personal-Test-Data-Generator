@@ -34,8 +34,10 @@ jobs:
           pip install pylint
           pylint backend/FakeInfoService/services/*.py
 
-      - name: Unit tests
-        run: pytest tests/unit
+      - name: Run Python tests with coverage
+        run: |
+          pip install pytest-cov
+          pytest --cov=backend --cov-report=xml tests/unit tests/integration tests/e2e
 
       - name: Start Flask app (background)
         run: |
@@ -113,6 +115,16 @@ jobs:
 
       - name: Pytest E2E tests
         run: pytest tests/e2e
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          organization: "group-i-personal-test-data-generator"
+          projectKey: "Group-I-Personal-Test-Data-Generator_Personal-Test-Data-Generator"
+          projectName: "Personal-Test-Data-Generator"
+          token: ${{ secrets.SONAR_TOKEN }}
+          extraArgs: >
+            -Dsonar.python.coverage.reportPaths=coverage.xml
 
       # ---------- Debug logs on failure ----------
       - name: Show logs on failure
