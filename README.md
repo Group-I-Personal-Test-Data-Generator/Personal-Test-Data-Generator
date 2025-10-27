@@ -26,7 +26,6 @@ Reference sources:
 ## Project Structure
 This is an **outline** of how we planned to organize files and folders for the assignment. 
 ```
-.github/workflows
 /frontend
 /backend
 /database
