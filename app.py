@@ -8,35 +8,35 @@ from backend.FakeInfoService.database.initialize import ensure_db_loaded
 def create_app() -> Flask:
     settings = Settings.from_env()
 
-    app = Flask(__name__)
-    app.config["SETTINGS"] = settings
+    flask_app = Flask(__name__)
+    flask_app.config["SETTINGS"] = settings
 
     # CORS: allow simple GETs from any origin (frontend uses plain fetch)
-    CORS(app, resources={r"/*": {"origins": "*"}}, methods=["GET"])
+    CORS(flask_app, resources={r"/*": {"origins": "*"}}, methods=["GET"])
 
     # ---- IMPORTANT CHANGE: initialize DB here (Flask 3 removed before_first_request)
     ensure_db_loaded(settings)
 
     # Blueprints
-    app.register_blueprint(api_bp)
+    flask_app.register_blueprint(api_bp)
 
-    @app.errorhandler(400)
-    def handle_bad_request(e):
+    @flask_app.errorhandler(400)
+    def handle_bad_request(_e):
         return {"error": "Bad request"}, 400
 
-    @app.errorhandler(404)
-    def handle_not_found(e):
+    @flask_app.errorhandler(404)
+    def handle_not_found(_e):
         return {"error": "Not found"}, 404
 
-    @app.errorhandler(500)
-    def handle_internal_error(e):
+    @flask_app.errorhandler(500)
+    def handle_internal_error(_e):
         return {"error": "Internal server error"}, 500
 
-    @app.get("/health")
+    @flask_app.get("/health")
     def health():
         return {"status": "ok"}, 200
 
-    return app
+    return flask_app
 
 if __name__ == "__main__":
     app = create_app()

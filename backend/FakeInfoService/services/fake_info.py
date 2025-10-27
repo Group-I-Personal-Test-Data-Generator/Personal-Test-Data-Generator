@@ -56,13 +56,13 @@ class Address:
 
 @dataclass
 class Person:
-    CPR: str
-    firstName: str
-    lastName: str
+    cpr: str
+    first_name: str
+    last_name: str
     gender: str
-    birthDate: str
+    birth_date: str
     address: Address
-    phoneNumber: str
+    phone_number: str
 
 
 def random_gender() -> str:
@@ -70,11 +70,10 @@ def random_gender() -> str:
 
 
 def random_birthdate(start_year: int = 1930, end_year: Optional[int] = None) -> date:
-    from datetime import date as _date
     if end_year is None:
-        end_year = _date.today().year - 18
-    start = _date(start_year, 1, 1)
-    end = _date(end_year, 12, 31)
+        end_year = date.today().year - 18
+    start = date(start_year, 1, 1)
+    end = date(end_year, 12, 31)
     d = start + timedelta(days=random.randint(0, (end - start).days))
     return d
 
@@ -98,7 +97,7 @@ def random_name(gender: str) -> Tuple[str, str]:
     last = random.choice(NAMES["last"]) if NAMES["last"] else "Nielsen"
     return first, last
 
-# TODO: This found an error in integration test with length 9
+
 def random_phone() -> str:
     prefix = random.choice(DK_PHONE_PREFIXES)   # two digits in your code
     rest = f"{random.randint(0, 999_999):06d}"  # exactly 6 digits
@@ -144,11 +143,11 @@ def build_person(conn) -> Dict[str, Any]:
     dob = random_birthdate()
     first, last = random_name(gender)
     return {
-        "CPR": make_cpr(dob, gender),
-        "firstName": first,
-        "lastName": last,
+        "cpr": make_cpr(dob, gender),
+        "first_name": first,
+        "last_name": last,
         "gender": gender,
-        "birthDate": dob.isoformat(),
+        "birth_date": dob.isoformat(),
         "address": random_address(conn),
-        "phoneNumber": random_phone(),
+        "phone_number": random_phone(),
     }

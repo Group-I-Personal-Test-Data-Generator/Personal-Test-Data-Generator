@@ -21,7 +21,7 @@ def test_generate_one_person(browser_page):
     verify_field(browser_page, ".townValue", validation.is_valid_town)
     verify_field(browser_page, ".phoneNumberValue", validation.is_valid_phone_number)
 
-    
+
 #  2. **Generate multiple persons**
 #    - Select `chkPerson`
 #    - Set `txtNumberPersons` to 3

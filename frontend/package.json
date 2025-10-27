@@ -1,0 +1,20 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "## Purpose Frontent for the [Fake Data Generator](https://github.com/arturomorarioja/fake_info), which generates fake data of nonexistent Danish persons.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint '**/*.js'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint-community/eslint-utils": "^4.9.0",
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.10.0",
+    "eslint": "^9.38.0"
+  }
+}

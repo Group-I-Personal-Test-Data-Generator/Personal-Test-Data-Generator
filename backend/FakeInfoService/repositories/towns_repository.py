@@ -3,7 +3,8 @@ import random
 import sqlite3
 from typing import Tuple
 
-from backend.FakeInfoService.repositories.settings import Settings, get_conn
+# unsused import kept for future use
+#from backend.FakeInfoService.repositories.settings import Settings, get_conn
 
 def pick_random_town(conn: sqlite3.Connection) -> Tuple[str, str]:
     cur = conn.execute("SELECT COUNT(*) AS c FROM postal_code")

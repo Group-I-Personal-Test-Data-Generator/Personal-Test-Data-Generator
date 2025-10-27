@@ -1,4 +1,4 @@
-# terminal: pytest -s tests/integration/test_address_api.py     
+""" terminal: pytest -s tests/integration/test_address_api.py """     
 
 # Expected structure of the Address dataclass returned by /address
 EXPECTED_ADDRESS_SCHEMA = {
@@ -20,11 +20,14 @@ def test_address_endpoint_returns_valid_structure(client):
     # Verify that all expected fields exist and match the expected types
     for field, expected_type in EXPECTED_ADDRESS_SCHEMA.items():
         assert field in address_data, f"Missing field '{field}' in response"
-        assert isinstance(address_data[field], expected_type), f"Field '{field}' is not of type {expected_type}"
+        assert isinstance(address_data[field], expected_type), (
+            f"Field '{field}' is not of type {expected_type}" )
 
     # Postal code and address fields should have valid formatting
-    assert address_data["postal_code"].isdigit() and len(address_data["postal_code"]) == 4, "Invalid postal code format"
-    assert address_data["street"] and address_data["number"] and address_data["town_name"], "Street, number, or town_name is empty"
+    assert address_data["postal_code"].isdigit() and len(address_data["postal_code"]) == 4,(
+        "Invalid postal code format")
+    assert( address_data["street"] and address_data["number"] and address_data["town_name"]
+           ), "Street, number, or town_name is empty"
 
 # Confirms that /address returns data that actually exists in the database.
 def test_address_endpoint_returns_db_backed_town(client, db_conn):

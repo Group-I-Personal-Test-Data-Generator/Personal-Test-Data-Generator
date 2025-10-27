@@ -1,0 +1,20 @@
+{
+  "name": "personal-test-data-generator",
+  "version": "1.0.0",
+  "description": "![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python) ![Flask](https://img.shields.io/badge/Backend-Flask-lightgrey?logo=flask) ![MariaDB](https://img.shields.io/badge/Database-MariaDB-blue?logo=mariadb) ![Pytest](https://img.shields.io/badge/Tests-Pytest-green?logo=pytest) ![Postman](https://img.shields.io/badge/API-Postman-orange?logo=postman) ![Playwright](https://img.shields.io/badge/E2E-Playwright-purple?logo=microsoft) ![SonarQube](https://img.shields.io/badge/Static--Analysis-SonarQube-lightblue?logo=sonarqube) ![GitHub Actions](https://img.shields.io/badge/CI/CD-GitHub%20Actions-black?logo=githubactions)",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint-community/eslint-utils": "^4.9.0",
+    "@eslint/eslintrc": "^3.3.1",
+    "eslint": "^9.38.0"
+  }
+}
