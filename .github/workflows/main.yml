@@ -122,7 +122,7 @@ jobs:
         with:
           args: >
             -Dsonar.organization=Group-I-Personal-Test-Data-Generator
-            -Dsonar.projectKey=group-i-personal-test-data-generator
+            -Dsonar.projectKey=Group-I-Personal-Test-Data-Generator_Personal-Test-Data-Generator
             -Dsonar.python.version=3.11
             -Dsonar.sources=.
             -Dsonar.exclusions=**/tests/**
