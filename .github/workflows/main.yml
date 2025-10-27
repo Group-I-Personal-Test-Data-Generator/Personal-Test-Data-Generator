@@ -116,10 +116,18 @@ jobs:
 
       - name: SonarQube Scan
         uses: SonarSource/sonarcloud-github-action@v2
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: https://sonarcloud.io
         with:
-          projectKey: your_project_key
-          organization: your_org_key
-          token: ${{ secrets.SONAR_TOKEN }}
+          args: >
+            -Dsonar.organization=Group-I-Personal-Test-Data-Generator
+            -Dsonar.projectKey=group-i-personal-test-data-generator
+            -Dsonar.python.version=3.11
+            -Dsonar.sources=.
+            -Dsonar.exclusions=**/tests/**
+            -Dsonar.test.inclusions=**/tests/**
+            -Dsonar.python.coverage.reportPaths=coverage.xml
 
       # ---------- Debug logs on failure ----------
       - name: Show logs on failure
