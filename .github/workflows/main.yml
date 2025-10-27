@@ -121,7 +121,7 @@ jobs:
           SONAR_HOST_URL: https://sonarcloud.io
         with:
           args: >
-            -Dsonar.organization=Group-I-Personal-Test-Data-Generator
+            -Dsonar.organization=group-i-personal-test-data-generator
             -Dsonar.projectKey=Group-I-Personal-Test-Data-Generator_Personal-Test-Data-Generator
             -Dsonar.python.version=3.11
             -Dsonar.sources=.
