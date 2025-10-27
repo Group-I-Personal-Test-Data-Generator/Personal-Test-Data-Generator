@@ -1,7 +1,7 @@
 # Personal Test Data Generator – Group I  
 ![Python](https://img.shields.io/badge/Python-3.11+-blue?logo=python)
 ![Flask](https://img.shields.io/badge/Backend-Flask-lightgrey?logo=flask)
-![MariaDB](https://img.shields.io/badge/Database-MariaDB-blue?logo=mariadb)
+![SQLite](https://img.shields.io/badge/Database-SQLite-blue?logo=sqlite)
 ![Pytest](https://img.shields.io/badge/Tests-Pytest-green?logo=pytest)
 ![Postman](https://img.shields.io/badge/API-Postman-orange?logo=postman)
 ![Playwright](https://img.shields.io/badge/E2E-Playwright-purple?logo=microsoft)
@@ -14,7 +14,7 @@
 
 ## Overview  
 The system generates **fake Danish personal data** — CPR, name, address, and phone — for software testing.  
-Originally built in **PHP + MariaDB**, now converted to **Python (Flask) + MariaDB** with a focus on **test-driven development** across unit, integration, and end-to-end levels.
+Originally built in **PHP + MariaDB**, now converted to **Python (Flask) + SQLite** with a focus on **test-driven development** across unit, integration, and end-to-end levels.
 
 Reference sources:  
 - [arturomorarioja's PHP Backend](https://github.com/arturomorarioja/fake_info/)  
@@ -24,139 +24,119 @@ Reference sources:
 ---
 
 ## Project Structure
-This is a **temporary outline** of how we plan to organize files and folders for the assignment. 
+This is an **outline** of how we planned to organize files and folders for the assignment. 
 ```
+.github/workflows
 /frontend
 /backend
 /database
 /tests
 ├── /unit
-├── /integration(api)
+├── /integration
 └── /e2e
 /.github
 └── /workflows
-/docs
+/pdf
 ├── /test-design (black, white, pdf)
 └── /static-analysis (sonar, lint, screenshots)
+app.py
 .gitignore
 README.md
 ```
 
 ---
+## Run the project in local
 
-## Domain Responsibilities
-
-### 1. Backend Conversion  
-**Responsible:** [@ChristianBT96](https://github.com/ChristianBT96) + ChatGPT 5 Plus  
-
-Convert PHP backend to Python (Flask) and connect to MariaDB.
-
-**Checklist:**  
-- [x] Organization + Repository created
-- [x] Folder structure created
-- [x] Backend logic converted
-- [x] Flask REST API endpoints implemented  
-- [x] db connection established  
-- [x] Manual API + DB verification   
-
-**Output:** Stable Flask + db backend.
+```bash
+# Terminal A for flask application
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python app.py
+```
 
 ---
 
-### 2. Unit Testing  
-**Responsible:** [@ViktorBach](https://github.com/ViktorBach), [@SofieAmalie44](https://github.com/SofieAmalie44), ([@ChristianBT96](https://github.com/ChristianBT96))  
+## Presentation Outline
 
-Validate backend logic independent of database and API.
+### 1. Tech Stack & Conversion
+**Responsible:** [@ChristianBT96](https://github.com/ChristianBT96)
 
-**Checklist:**  
-- [ ] White-box tests (statement & branch coverage)  
-- [ ] Black-box tests (EP, BVA, Decision Tables)  
-- [ ] CPR, gender, date, phone, address logic verified  
-- [ ] Statement & branch coverage metrics generated
-- [ ] Create unit tests with pytest
-- [ ] ...  
-
-> ***Marcus Note:***    
-> Just a thought, some of the `FakeInfo` methods could be split into smaller ones (like `getCpr()`, `getFullName()`, `getGender()`, or `getBirthDate()`).  
-> Following SoC and AAA best practice, unit tests should focus on one behavior at a time, and combined methods (like `getCprFullNameGenderAndBirthDate()`) could make that harder.
-
-**Output:** Reliable backend logic validated through automated tests.
+- [x] PHP → Python (Flask) backend conversion
+- [x] SQLite connection established
+- [x] Same frontend reused (JS/HTML)  
+- [x] SQLite connection established
 
 ---
 
-### 3. Integration Testing  
+### 2. CI/CD Pipeline
+**Responsible:** [@ChristianBT96](https://github.com/ChristianBT96)
+
+- [x] GitHub Actions workflow → main.yml
+- [x] Triggered on push and pull main
+
+---
+
+### 3. Unit Testing  
+**Responsible:** [@ViktorBach](https://github.com/ViktorBach), [@SofieAmalie44](https://github.com/SofieAmalie44)
+
+**Checklist:**  
+- [x] pyTest used for backend logic validation 
+- [x] Black-box 
+- [x] White-box 
+- [x] tests/unit
+
+```bash
+pytest -q tests/unit
+``` 
+
+---
+
+### 4. Integration Testing  
 **Responsible:** [@marcus-rk](https://github.com/marcus-rk)  
-
-Integration testing verifies that all main system layers work together correctly
 
 **Checklist:**  
 
 - **API ↔ Database**  
-  - [x] Flask successfully connects to the local SQLite database (no errors)  
-  - [x] Endpoints using the DB (e.g. /address, /person) return valid data from addresses.sql  
-  - [x] Returned data types and relationships are correct (town_name matches postal code, etc.)
-  - [x] Integration tests located in tests/integration/ pass
-    ```bash
-    pytest -q tests/integration
-    ```
+  - [x] tests/integration 
+  - [x] pyTest for testing API ↔ SQLite
+  - [x] Postman for testing API ↔ Client
+  - [x] Postman with Newman in pipeline
 
-- **Client ↔ API**  
-  - [x] Create Postman collection for all endpoints  
-  - [x] Each test validates status codes, JSON structure, and key fields (CPR, birthDate, gender, etc.) 
-  - [x] Logical consistency verified (CPR ↔ birthDate, gender ↔ parity rule)
-  - [x] Error handling tested for invalid query parameters (?n=abc, ?n=0, ?n=101)
-  - [x] Collection and environment exported to tests/integration/postman/
-  - [ ] Share Collection and environment through Postman organization
-
-- **Later (CI/CD)**  
-  - [ ] Run pytest and Postman collection automatically in pipeline 
-
-**Output:** Verified and automated integration flow.  
+```bash
+pytest -q tests/integration
+```  
 
 ---
 
-### 4. End-to-End Testing  
+### 5. Linting & SonarQube
+**Responsible:** [@SofieAmalie44](https://github.com/SofieAmalie44)
+
+**Checklist:**  
+- [x] Static code analysis with ESLint 
+- [x] SonarQube 
+
+```bash
+pylint backend/FakeInfoService/services/*.py
+npx eslint "**/*.js"
+```  
+
+---
+
+### 6. End-to-End Testing 
 **Responsible:** [@DetGrey](https://github.com/DetGrey), [@nathasjafink](https://github.com/nathasjafink)  
 
-Validate complete system behavior through the frontend.
-
 **Checklist:**  
-- [x] Playwright / Cypress configured  
-- [x] UI displays API data correctly  
-- [ ] “Happy path” tested end-to-end  
-- [ ] Integrated into CI/CD  (LATER)
-- [ ] ...  
+- [x] Playwright test
+- [x] Run in pipeline
 
-**Output:** Full system tested and validated.
+```bash
+# Terminal B for frontend
+python -m http.server 5500 --bind 127.0.0.1 --directory frontend
 
----
-
-### 5. Static Testing & Quality Assurance  
-**Responsible:** [@SofieAmalie44](https://github.com/SofieAmalie44)  
-
-Ensure maintainable and consistent code quality.
-
-**Checklist:**  
-- [ ] ESLint configured  
-- [ ] SonarQube analysis made (with screenshot?)
-- [ ] ...  
-
-**Output:** Codebase meets static quality and style standards.
-
----
-
-### 6. CI/CD/CT Pipeline  
-**Responsible:** ALL  
-
-Automate testing, building, and deployment processes.
-
-**Checklist:**  
-- [ ] GitHub Actions workflow created  
-- [ ] Unit + integration + E2E tests integrated  (all?) 
-- [ ] Static analysis and coverage reports included
-- [ ] ...  
-
-**Output:** Fully automated and maintainable CI/CD pipeline.
+# Terminal C for e2e test
+playwright install
+pytest -q tests/e2e
+``` 
 
 ---
 
@@ -172,7 +152,7 @@ Automate testing, building, and deployment processes.
 | GET | `/address` | Returns a fake address |
 | GET | `/phone` | Returns a fake phone number |
 | GET | `/person` | Returns all data for one fake person |
-| GET | `/person&n=<number_of_fake_persons>` | Returns fake data for multiple persons (2–100) |
+| GET | `/person?n=<number_of_fake_persons>` | Returns fake data for multiple persons (2–100) |
 
 ---
 
@@ -189,4 +169,3 @@ Automate testing, building, and deployment processes.
 | `getPhoneNumber()` | `str` | Returns a fake phone number |
 | `getFakePerson()` | `dict` | Returns all data for one fake person |
 | `getFakePersons(amount: int)` | `list[dict]` | Returns fake data for multiple persons (2–100) |
-
