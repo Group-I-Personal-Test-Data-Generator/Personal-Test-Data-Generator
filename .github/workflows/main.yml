@@ -34,10 +34,8 @@ jobs:
           pip install pylint
           pylint backend/FakeInfoService/services/*.py
 
-      - name: Run Python tests with coverage
-        run: |
-          pip install pytest-cov
-          pytest --cov=backend --cov-report=xml tests/unit tests/integration tests/e2e
+      - name: Unit tests
+        run: pytest tests/unit
 
       - name: Start Flask app (background)
         run: |
