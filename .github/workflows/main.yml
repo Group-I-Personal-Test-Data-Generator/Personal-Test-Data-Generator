@@ -114,21 +114,6 @@ jobs:
       - name: Pytest E2E tests
         run: pytest tests/e2e
 
-      - name: SonarQube Scan
-        uses: SonarSource/sonarcloud-github-action@v2
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: https://sonarcloud.io
-        with:
-          args: >
-            -Dsonar.organization=group-i-personal-test-data-generator
-            -Dsonar.projectKey=Group-I-Personal-Test-Data-Generator_Personal-Test-Data-Generator
-            -Dsonar.python.version=3.11
-            -Dsonar.sources=.
-            -Dsonar.exclusions=**/tests/**
-            -Dsonar.test.inclusions=**/tests/**
-            -Dsonar.python.coverage.reportPaths=coverage.xml
-
       # ---------- Debug logs on failure ----------
       - name: Show logs on failure
         if: failure()
