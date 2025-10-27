@@ -16,6 +16,24 @@ def _json(obj, status=200):
         mimetype="application/json; charset=utf-8",
     )
 
+def format_person(person: dict) -> dict:
+    """Convert snake_case keys to camelCase and match Postman expectations."""
+    return {
+        "CPR": person.get("cpr"),
+        "firstName": person.get("first_name"),
+        "lastName": person.get("last_name"),
+        "gender": person.get("gender"),
+        "birthDate": person.get("birth_date"),
+        "address": {
+            "street": person["address"].get("street"),
+            "number": person["address"].get("number"),
+            "floor": person["address"].get("floor"),
+            "door": person["address"].get("door"),
+            "postal_code": person["address"].get("postal_code"),
+            "town_name": person["address"].get("town_name"),
+        } if person.get("address") else None,
+        "phoneNumber": person.get("phone_number"),
+    }
 
 @api_bp.get("/person")
 def person():
@@ -29,8 +47,9 @@ def person():
 
     with get_conn(current_app.config["SETTINGS"]) as conn:
         if n == 1:
-            return _json(build_person(conn))
-        people = [build_person(conn) for _ in range(n)]
+            raw_person = build_person(conn)
+            return _json(format_person(raw_person))
+        people = [format_person(build_person(conn)) for _ in range(n)]
         return _json(people)
 
 

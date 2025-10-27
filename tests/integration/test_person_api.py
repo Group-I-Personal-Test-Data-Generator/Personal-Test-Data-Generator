@@ -29,27 +29,7 @@ def test_person_endpoint_returns_valid_structure(client):
     person_data = response.get_json()
     assert isinstance(person_data, dict), "Response is not a JSON object"
 
-    # Log keys for debugging
-    print("Received keys:", list(person_data.keys()))
-
-    # Basic sanity checks without enforcing full schema
-    if "CPR" in person_data:
-        assert isinstance(person_data["CPR"], str)
-        assert person_data["CPR"].isdigit() and len(person_data["CPR"]) == 10
-
-    if "phoneNumber" in person_data:
-        assert isinstance(person_data["phoneNumber"], str)
-        assert person_data["phoneNumber"].isdigit() and len(person_data["phoneNumber"]) == 8
-
-    address = person_data.get("address", {})
-    if address:
-        if "postal_code" in address:
-            assert address["postal_code"].isdigit() and len(address["postal_code"]) == 4
-        for key in ["street", "number", "town_name"]:
-            if key in address:
-                assert address[key], f"{key} is empty"
-
-"""   # Person fields
+    # Person fields
     for field, expected_type in EXPECTED_PERSON_SCHEMA.items():
         assert field in person_data, f"Missing field '{field}' in response"
         assert isinstance(person_data[field], expected_type), f"Field '{field}' is not of type {expected_type}"
@@ -64,7 +44,7 @@ def test_person_endpoint_returns_valid_structure(client):
     assert person_data["CPR"].isdigit() and len(person_data["CPR"]) == 10, "Invalid CPR format"
     assert person_data["phoneNumber"].isdigit() and len(person_data["phoneNumber"]) == 8, "Invalid phone number format"
     assert address["postal_code"].isdigit() and len(address["postal_code"]) == 4, "Invalid postal code format"
-    assert address["street"] and address["number"] and address["town_name"], "Street, number, or town_name is empty" """
+    assert address["street"] and address["number"] and address["town_name"], "Street, number, or town_name is empty"
 
 # Confirms that /person returns an address that exists in the database.
 def test_person_endpoint_returns_db_backed_town(client, db_conn):
@@ -72,27 +52,17 @@ def test_person_endpoint_returns_db_backed_town(client, db_conn):
     assert response.status_code == 200, f"Unexpected status code: {response.status_code}"
 
     person_data = response.get_json()
-    address = person_data.get("address", {})
+    address = person_data["address"]
 
-    # Skip DB check, just make sure address exists
-    assert isinstance(address, dict), "Address is missing"
-
-    """matching_row = db_conn.execute(
+    matching_row = db_conn.execute(
         "SELECT 1 FROM postal_code WHERE postal_code=? AND town_name=? LIMIT 1",
         (address["postal_code"], address["town_name"]),
     ).fetchone()
 
-    assert matching_row is not None, "Returned address does not exist in the database" """
+    assert matching_row is not None, "Returned address does not exist in the database"
 
-# Skips invalid query param tests entirely
-def test_person_endpoint_handles_invalid_params_soft(client):
-    # Just check service responds
-    for n in ["abc", "0", "101"]:
-        response = client.get(f"/person?n={n}")
-        assert response.status_code in (200, 400)  # accept either
-"""
 # Checks that /person handles invalid 'n' query params (type and bounds).
 def test_person_endpoint_handles_invalid_params(client):
     assert client.get("/person?n=abc").status_code == 400, "Expected 400 for non-integer 'n'"
     assert client.get("/person?n=0").status_code == 400, "Expected 400 for 'n' less than 1"
-    assert client.get("/person?n=101").status_code == 400, "Expected 400 for 'n' greater than 100" """
+    assert client.get("/person?n=101").status_code == 400, "Expected 400 for 'n' greater than 100"
