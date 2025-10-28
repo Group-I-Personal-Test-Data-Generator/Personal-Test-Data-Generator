@@ -14,7 +14,7 @@
 
 ## Overview  
 The system generates **fake Danish personal data** — CPR, name, address, and phone — for software testing.  
-Originally built in **PHP + MariaDB**, now converted to **Python (Flask) + SQLite** with a focus on **test-driven development** across unit, integration, and end-to-end levels.
+Originally built in **PHP + MariaDB**, now converted to **Python (Flask) + SQLite**.
 
 Reference sources:  
 - [arturomorarioja's PHP Backend](https://github.com/arturomorarioja/fake_info/)  

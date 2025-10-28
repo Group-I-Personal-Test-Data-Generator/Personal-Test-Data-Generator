@@ -2,161 +2,123 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - feature/*
   pull_request:
     branches: [ main ]
 
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  unit:
-    name: Unit tests
+  test:
     runs-on: ubuntu-latest
+
+    env:
+      BASE_URL: http://127.0.0.1:5002       # Flask API
+      FRONTEND_URL: http://127.0.0.1:5500   # Static frontend
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
       - name: Install Python deps
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install pytest-mock
+
+      - name: Run Pylint (Static Analysis)
+        run: |
+          pip install pylint
+          pylint backend/FakeInfoService/services/*.py
+
       - name: Unit tests
-        run: pytest -q tests/unit
-      - name: Upload unit logs
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: unit-logs
-          path: |
-            .pytest_cache
-            **/junit*.xml
-          if-no-files-found: ignore
+        run: pytest tests/unit
 
-  contract:
-    name: API contract tests (Pytest + Postman)
-    needs: unit
-    runs-on: ubuntu-latest
-    env:
-      BASE_URL: http://127.0.0.1:5002     # Flask API
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - name: Install Python deps
+      - name: Start Flask app (background)
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt gunicorn
-
-      # Start Flask correctly on :5002 and disable reloader
-      - name: Start API (gunicorn, background)
-        run: |
-          nohup gunicorn -w 2 -b 127.0.0.1:5002 app:app > /tmp/app.log 2>&1 &
+          nohup python app.py > /tmp/app.log 2>&1 &
           echo $! > /tmp/app.pid
 
-      - name: Wait for API on :5002
+      - name: Wait for app on :5002
         run: |
-          for i in {1..60}; do
-            curl -fsS "http://127.0.0.1:5002/healthz" && exit 0 || true
-            sleep 1
-          done
-          echo "API did not start on :5002 within 60s" && exit 1
+          python - <<'PY'
+          import socket, time, sys
+          deadline = time.time() + 60
+          while time.time() < deadline:
+              try:
+                  import socket as s
+                  sock = s.socket()
+                  sock.settimeout(1)
+                  sock.connect(("127.0.0.1", 5002))
+                  sock.close()
+                  sys.exit(0)
+              except Exception:
+                  time.sleep(1)
+          sys.exit("Server did not start on port 5002 within 60s")
+          PY
 
-      # Python integration tests that hit the API
       - name: Pytest integration tests
-        run: pytest -q tests/integration
+        run: pytest tests/integration
 
-      # Postman / Newman
-      - uses: actions/setup-node@v4
+      # ---------- Postman (Newman) ----------
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
+
+      - name: Install JS deps
+        working-directory: frontend
+        run: npm install
+
+      - name: Run ESLint (Static Analysis)
+        working-directory: frontend
+        run: |
+          npm ci
+          npx eslint "**/*.js"
+
       - name: Install Newman
         run: npm install -g newman
+
       - name: Run Postman collection
         working-directory: tests/integration/postman
         run: |
           newman run Personal_Test_Data_Generator.postman_collection.json \
             --environment Environment_Pesonal_Test_Data.postman_environment.json \
-            --env-var BASE_URL="${BASE_URL}"
+            --env-var BASE_URL="${BASE_URL}" \
 
-      - name: Upload API logs
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: api-logs
-          path: /tmp/app.log
-          if-no-files-found: warn
-
-  e2e:
-    name: End-to-end (frontend + backend)
-    needs: contract
-    runs-on: ubuntu-latest
-    env:
-      BASE_URL: http://127.0.0.1:5002
-      FRONTEND_URL: http://127.0.0.1:5500
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-      - name: Install Python deps
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt gunicorn
-
-      # Start API (again; new VM)
-      - name: Start API (gunicorn, background)
-        run: |
-          nohup gunicorn -w 2 -b 127.0.0.1:5002 app:app > /tmp/app.log 2>&1 &
-          echo $! > /tmp/app.pid
-
-      - name: Wait for API on :5002
-        run: |
-          for i in {1..60}; do
-            curl -fsS "http://127.0.0.1:5002/healthz" && exit 0 || true
-            sleep 1
-          done
-          echo "API did not start on :5002 within 60s" && exit 1
-
-      # Frontend as a simple static server
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
+      # ---------- E2E (frontend + backend) ----------
       - name: Install http-server
         run: npm install -g http-server
-      - name: Start frontend (background on :5500)
+
+      - name: Start frontend server (background on :5500)
         run: |
-          nohup http-server ./frontend -p 5500 > /tmp/frontend.log 2>&1 &
+          nohup http-server -p 5500 > /tmp/frontend.log 2>&1 &
           echo $! > /tmp/frontend.pid
+        working-directory: ./frontend
+
       - name: Wait for frontend on :5500
         run: |
           for i in {1..60}; do
-            curl -fsS "${FRONTEND_URL}/" && exit 0 || true
+            curl -fsS "${FRONTEND_URL}/" && exit 0
             sleep 1
           done
           echo "Frontend did not start on ${FRONTEND_URL} within 60s"
           exit 1
 
-      # Playwright / E2E
-      - name: Install Playwright
-        run: |
-          npm i -g playwright
-          playwright install
-          playwright install-deps
+      - name: Install Playwright browsers
+        run: playwright install
+
       - name: Pytest E2E tests
-        run: pytest -q tests/e2e
-      - name: Upload E2E artifacts
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: e2e-artifacts
-          path: |
-            /tmp/app.log
-            /tmp/frontend.log
-            playwright-report/**
-            **/screenshots/**
-            **/videos/**
-          if-no-files-found: ignore
+        run: pytest tests/e2e
+
+      # ---------- Debug logs on failure ----------
+      - name: Show logs on failure
+        if: failure()
+        run: |
+          echo "==== app.log ===="
+          sed -n '1,200p' /tmp/app.log || true
+          echo "==== frontend.log ===="
+          sed -n '1,200p' /tmp/frontend.log || true
