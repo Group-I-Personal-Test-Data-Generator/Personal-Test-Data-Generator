@@ -48,9 +48,9 @@ README.md
 
 ```bash
 # Terminal A for flask application
-python -m venv .venv && source .venv/bin/activate
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-python app.py
+python3 app.py
 ```
 
 ---
